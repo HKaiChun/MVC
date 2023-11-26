@@ -34,7 +34,7 @@
 		<td>{{pro.pName}}</td>
 		<td>{{pro.price}}</td>
 		<td>{{pro.description}}</td>
-		<td>{{pro.number}}</td>
+		<td>{{pro.num}}</td>
 		<td>{{pro.total}}</td>
 		<td><button @click="delPro(pro.id)">刪</button></td>
 	</tr>
@@ -47,9 +47,9 @@
 
 	商品說明: {{newPro.description}}<br>
 	
-	數量: <input type="text" v-model="newPro.number"><br>
+	數量: <input type="text" v-model="newPro.num"><br>
 
-	<input type='button' @click="addPro(pro)" value="save">
+	<input type='button' @click="addJob(pro)" value="save">
 </div>
 </div>
 
@@ -64,7 +64,7 @@ const todoApp= Vue.createApp({
 				pName: '',
 				price: '',
 				description: '',
-				number: 0,
+				num: 0,
 				total: 0
 			}
 		}
@@ -115,6 +115,23 @@ const todoApp= Vue.createApp({
 			mydat.append( "dat", JSON.stringify(this.newPro) );
 
 			let url="ManagementControll.php?act=addnum";
+			fetch(url,{
+				method: 'POST',
+				body: mydat // 將表單物件放入fetch的body屬性
+			})
+			.then(function(res){return res.text(); }) //取得傳回值，轉為文字
+			.then(function(data){ 
+				console.log(data);
+				that.setUI('main');
+				//that.loadList();
+			})
+		},
+		addJob: function () {
+			const that=this;
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
+
+			let url="ManagementControll.php?act=addJob";
 			fetch(url,{
 				method: 'POST',
 				body: mydat // 將表單物件放入fetch的body屬性

@@ -25,7 +25,13 @@ switch($act) {
         $pro=getJobList1();
         echo json_encode($pro);
         return;
-
+    case "addJob":
+        $proStr = $_POST['dat'];
+        $pro = json_decode($proStr);
+        //should verify first
+        addJob($pro->pName,$pro->price,$pro->description,$pro->num);
+        return;
     default;
+
 }
 ?>

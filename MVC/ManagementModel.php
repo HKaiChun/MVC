@@ -65,18 +65,18 @@ function delPro($id) {
 	mysqli_stmt_execute($stmt);  //執行SQL
 	return True;
 }
-/*
-function addJob($name,$price,$content,$number)
+
+function addJob($pName,$price,$description,$num)
 {
 	global $db;
-    $total = $number*$price;
-	$sql = "insert into shopping (name, price, content, number, total) values (?, ?, ?, ?, ?)"; //SQL中的 ? 代表未來要用變數綁定進去的地方
+    $total = $num*$price;
+	$sql = "insert into shop (pName, price,description,num, total) values (?, ?, ?, ?, ?)"; //SQL中的 ? 代表未來要用變數綁定進去的地方
 	$stmt = mysqli_prepare($db, $sql); //prepare sql statement
-	mysqli_stmt_bind_param($stmt, "sisii", $name, $price,$content,$number,$total); //bind parameters with variables, with types "sss":string, string ,string
+	mysqli_stmt_bind_param($stmt, "sisii", $pName, $price,$description,$num,$total); //bind parameters with variables, with types "sss":string, string ,string
 	mysqli_stmt_execute($stmt);  //執行SQL
 	return True;
 }
-*/
+
 // function updateJob($id, $pName,$description,$price) {
 // 	echo $id, $pName,$description,$price;
 // 	return;
