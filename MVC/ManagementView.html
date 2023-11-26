@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://unpkg.com/vue@next"></script> <!-- 為了使用 Vue -->
+    <title>ManagementProducts</title>
+</head>
+
+<body>
+    <div id="main">
+        <div id="list" v-if="UI=='main'">
+            <h1>This is the main page.</h1>
+            <button @click="setAddUI()">Load Add Form</button>
+            <table border=1>
+                <tr>
+                    <td>id</td>
+                    <td>商品名稱</td>
+                    <td>描述</td>
+                    <td>價格</td>
+                    <td>刪除</td>
+                    <td>編輯</td>
+                </tr>
+                <tr v-for="pro in dat">
+                    <td>{{pro.id}}</td>
+                    <td>{{pro.pName}}</td>
+                    <td>{{pro.description}}</td>
+                    <td>{{pro.price}}</td>
+                    <td><button @click="delPro(pro.id)">刪除</button></td>
+                    <td><button @click="setEditUI(pro)">編輯</button></td>
+                </tr>
+            </table>
+        </div>
+        <div v-if="UI=='editForm'">
+            商品名稱: <input type="text" v-model="newPro.pName" /> <br />
+            描述: <textarea v-model="newPro.description"></textarea><br>
+            價格: <input type="number" v-model="newPro.price" id="tentacles"/><br>
+            <input type='button' @click="addPro()" value="save">
+        </div>
+    </div>
+    <script>
+        const MaPro = Vue.createApp({
+            data() {
+                return {
+                    UI: 'main',
+                    dat: [],
+                    newPro: {
+                        id: -1,
+                        pName: '',
+                        description: '',
+                        price: ''
+                    }
+                }
+            },
+            methods: {
+                loadList: function () {
+                    const that = this; //this  ==> stands for vm6. let's save `this` to `that`
+                    fetch('ManagementControll.php?act=listPro')
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (myJson) {
+                            //we are inside the callback function, now `this` means the function, not vm6
+                            //we will use `that` to access vm6
+
+                            that.dat = myJson;
+                            //MaPro.dat = myJson;
+                        });
+                },
+                addPro: function () {
+                    const that = this;
+                    let mydat = new FormData();
+                    mydat.append("dat", JSON.stringify(this.newPro));
+                    let url = "ManagementControll.php?act=addPro";
+                    fetch(url, {
+                        method: 'POST',
+                        body: mydat // 將表單物件放入fetch的body屬性
+                    })
+                        .then(function (res) { return res.text(); }) //取得傳回值，轉為文字
+                        .then(function (data) {
+                            console.log(data);
+                            that.setUI('main');
+                            that.loadList();
+                        })
+                },
+                delPro: function (id) {
+                    const that = this;
+                    let url = "ManagementControll.php?act=delPro&id=" + id;
+                    fetch(url, {
+                        method: 'POST'
+                    })
+                        .then(function (res) { return res.text(); }) //取得傳回值，轉為文字
+                        .then(function (data) {
+                            console.log(data);
+                            that.loadList();
+                        })
+                },
+                setEditUI: function (pro) {
+                    this.newPro = pro;
+                    this.setUI('editForm');
+                },
+                setAddUI: function () {
+                    this.newPro = {
+                        id: -1,
+                        pName: '',
+                        description: '',
+                        price: ''
+                    };
+                    this.setUI('editForm');
+                },
+                setUI: function (page) {
+                    this.UI = page;
+                }
+            },
+            created() {
+                this.loadList();
+            }
+        }).mount("#main");
+    </script>
+</body>
+
+</html>
