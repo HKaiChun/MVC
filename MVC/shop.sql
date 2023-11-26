@@ -33,8 +33,7 @@ CREATE TABLE `shop` (
   `price` decimal(10,2) NOT NULL,
   `content` text DEFAULT NULL,
   `number` int(11) NOT NULL,
-  `total` decimal(10,2) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `total` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
