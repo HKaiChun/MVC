@@ -36,7 +36,7 @@
 		<td>{{pro.description}}</td>
 		<td>{{pro.num}}</td>
 		<td>{{pro.total}}</td>
-		<td><button @click="delPro(pro.id)">刪</button></td>
+		<td><button @click="delJob(pro.id)">刪</button></td>
 	</tr>
 </table>
 </div>
@@ -141,6 +141,19 @@ const todoApp= Vue.createApp({
 				console.log(data);
 				that.setUI('main');
 				//that.loadList();
+			})
+		},
+		delJob: function (id) {
+			const that=this;
+			let url="ManagementControll.php?act=delJob&id="+id;
+			fetch(url,{
+				method: 'POST'
+			})
+			.then(function(res){return res.text(); }) //取得傳回值，轉為文字
+			.then(function(data){
+				console.log(data);
+				that.setUI1('editForm');
+				//that.loadshoppingList();
 			})
 		},
 		setQanUI: function(pro) {

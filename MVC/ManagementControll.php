@@ -31,6 +31,12 @@ switch($act) {
         //should verify first
         addJob($pro->pName,$pro->price,$pro->description,$pro->num);
         return;
+    case "delJob":
+        $id=(int)$_REQUEST['id']; //$_GET, $_REQUEST
+        //verify
+        delJob($id);
+        return;
+        
     default;
 
 }
