@@ -39,6 +39,7 @@
 		<td><button @click="delJob(pro.id)">刪</button></td>
 	</tr>
 </table>
+<p>總價:<span id="totalPrice"></span></p>
 </div>
 <div v-if="UI=='editForm2'">
 	商品名稱: {{newPro.pName}} <br/>
@@ -69,6 +70,19 @@ const todoApp= Vue.createApp({
 			}
 		}
 	},
+	watch: {
+        UI(newUI) {
+            if (newUI === 'editForm') {
+                // Only fetch the total price when UI is 'editForm'
+                this.fetchTotalPrice();
+                // Set up an interval to keep fetching the total price
+                this.totalPriceInterval = setInterval(this.fetchTotalPrice, 3000);
+            } else {
+                // Clear the interval when UI is not 'editForm'
+                clearInterval(this.totalPriceInterval);
+            }
+        },
+    },
 	methods: {
 		loadList: function () {
 			const that=this; //this  ==> stands for vm6. let's save `this` to `that`
@@ -156,6 +170,20 @@ const todoApp= Vue.createApp({
 				//that.loadshoppingList();
 			})
 		},
+		fetchTotalPrice: function() {
+			const that = this;
+			let url="ManagementControll.php?act=countP";
+			fetch(url, {
+				method: 'POST'
+			})
+			.then(response => response.text())
+			.then(data => {
+				document.getElementById('totalPrice').innerText = data;
+			})
+			.catch(error => {
+				console.error('Error fetch total price', error);
+			})
+		},
 		setQanUI: function(pro) {
 			this.newPro=pro;
 			this.setUI('editForm2');
@@ -172,6 +200,7 @@ const todoApp= Vue.createApp({
 	},
 	created() {
 		this.loadList();
+		// setInterval(this.fetchTotalPrice, 3000);
 	}
 }).mount("#main");
 </script>

@@ -36,7 +36,10 @@ switch($act) {
         //verify
         delJob($id);
         return;
-        
+    case "countP":
+        $totalP=countTotalP();
+        echo $totalP;
+        return;
     default;
 
 }

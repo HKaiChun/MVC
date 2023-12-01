@@ -85,7 +85,19 @@ function addJob($pName,$price,$description,$num)
 	mysqli_stmt_execute($stmt);  //執行SQL
 	return True;
 }
-
+function countTotalP()
+{
+	global $db;
+	$sql = "select sum(total) as totalSum FROM `shop`";
+	$stmt = mysqli_query($db, $sql);
+	if ($stmt) {
+		$row = mysqli_fetch_assoc($stmt);
+		return $row['totalSum'];
+	} else {
+		// 錯誤處理
+		return false;
+	}
+}
 // function updateJob($id, $pName,$description,$price) {
 // 	echo $id, $pName,$description,$price;
 // 	return;
