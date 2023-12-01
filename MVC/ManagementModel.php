@@ -75,15 +75,34 @@ function delJob($id)
 	mysqli_stmt_execute($stmt);  //執行SQL
 	return True;
 }
-function addJob($pName,$price,$description,$num)
+function addJob($pName,$price,$description,$num,$id)
 {
 	global $db;
     $total = $num*$price;
-	$sql = "insert into shop (pName, price,description,num, total) values (?, ?, ?, ?, ?)"; //SQL中的 ? 代表未來要用變數綁定進去的地方
-	$stmt = mysqli_prepare($db, $sql); //prepare sql statement
-	mysqli_stmt_bind_param($stmt, "sisii", $pName, $price,$description,$num,$total); //bind parameters with variables, with types "sss":string, string ,string
-	mysqli_stmt_execute($stmt);  //執行SQL
-	return True;
+	// 检查是否存在相同 id 的记录
+    $checkSql = "SELECT COUNT(*) FROM shop WHERE id = ?";
+    $checkStmt = mysqli_prepare($db, $checkSql);
+    mysqli_stmt_bind_param($checkStmt, "i", $id);
+    mysqli_stmt_execute($checkStmt);
+    
+    mysqli_stmt_bind_result($checkStmt, $count);
+    mysqli_stmt_fetch($checkStmt);
+    mysqli_stmt_close($checkStmt);
+
+	// 如果存在相同 id 的记录
+	if ($count > 0) {
+		$sql = "update shop set total = total + ?, num = num + ? where id = ?";
+		$stmt = mysqli_prepare($db, $sql);
+		mysqli_stmt_bind_param($stmt, "iii", $total, $num, $id);
+		mysqli_stmt_execute($stmt);
+		return true;
+	} else {
+		$sql = "insert into shop (pName, price,description,num, total, id) values (?, ?, ?, ?, ?, ?)"; //SQL中的 ? 代表未來要用變數綁定進去的地方
+		$stmt = mysqli_prepare($db, $sql); //prepare sql statement
+		mysqli_stmt_bind_param($stmt, "sisiii", $pName, $price,$description,$num,$total,$id); //bind parameters with variables, with types "sss":string, string ,string
+		mysqli_stmt_execute($stmt);  //執行SQL
+		return True;
+	}
 }
 function countTotalP()
 {

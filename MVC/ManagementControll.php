@@ -29,7 +29,7 @@ switch($act) {
         $proStr = $_POST['dat'];
         $pro = json_decode($proStr);
         //should verify first
-        addJob($pro->pName,$pro->price,$pro->description,$pro->num); //紀錄加入的工作
+        addJob($pro->pName,$pro->price,$pro->description,$pro->num,$pro->id); //紀錄加入的工作
         return;
     case "delJob":
         $id=(int)$_REQUEST['id']; //$_GET, $_REQUEST //獲取需要刪除id
