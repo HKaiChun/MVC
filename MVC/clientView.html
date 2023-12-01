@@ -170,7 +170,6 @@ const todoApp= Vue.createApp({
 				//that.loadshoppingList();
 			})
 		},
-<<<<<<< HEAD
 		fetchTotalPrice: function() {
 			const that = this;
 			let url="ManagementControll.php?act=countP";
@@ -186,9 +185,6 @@ const todoApp= Vue.createApp({
 			})
 		},
 		setQanUI: function(pro) {
-=======
-		setQanUI: function(pro) { // 設置編輯介面的方法
->>>>>>> 5d68c5a3aa31f80b5a322f5b09a0c7d0a3d09147
 			this.newPro=pro;
 			this.setUI('editForm2'); // 調用 setUI 方法，將介面設置為 'editForm2'
 		},
@@ -203,12 +199,8 @@ const todoApp= Vue.createApp({
 		
 	},
 	created() {
-<<<<<<< HEAD
 		this.loadList();
 		// setInterval(this.fetchTotalPrice, 3000);
-=======
-		this.loadList();//初始化專案列表
->>>>>>> 5d68c5a3aa31f80b5a322f5b09a0c7d0a3d09147
 	}
 }).mount("#main");
 </script>

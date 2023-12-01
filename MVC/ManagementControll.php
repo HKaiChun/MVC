@@ -36,16 +36,11 @@ switch($act) {
         //verify
         delJob($id);
         return;
-<<<<<<< HEAD
     case "countP":
         $totalP=countTotalP();
         echo $totalP;
         return;
     default;
-=======
-        
-    default;//預設，沒任何操作的情況
->>>>>>> 5d68c5a3aa31f80b5a322f5b09a0c7d0a3d09147
 
 }
 ?>
