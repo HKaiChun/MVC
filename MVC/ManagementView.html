@@ -43,9 +43,9 @@
         const MaPro = Vue.createApp({
             data() {
                 return {
-                    UI: 'main',
-                    dat: [],
-                    newPro: {
+                    UI: 'main',//介面初始值
+                    dat: [],//存放數據的陣列
+                    newPro: {//新增編輯前的預設值
                         id: -1,
                         pName: '',
                         description: '',
@@ -68,9 +68,9 @@
                             //MaPro.dat = myJson;
                         });
                 },
-                addPro: function () {
+                addPro: function () {//新增內容
                     const that = this;
-                    let mydat = new FormData();
+                    let mydat = new FormData();// 使用 FormData 包裝專案數據，並以 POST 方法發送到指定的 URL
                     mydat.append("dat", JSON.stringify(this.newPro));
                     let url = "ManagementControll.php?act=addPro";
                     fetch(url, {
@@ -79,26 +79,26 @@
                     })
                         .then(function (res) { return res.text(); }) //取得傳回值，轉為文字
                         .then(function (data) {
-                            console.log(data);
+                            console.log(data);//輸出數據給控制台
                             that.setUI('main');
                             that.loadList();
                         })
                 },
-                delPro: function (id) {
+                delPro: function (id) {//刪除列表
                     const that = this;
-                    let url = "ManagementControll.php?act=delPro&id=" + id;
+                    let url = "ManagementControll.php?act=delPro&id=" + id;//用url加上參數id
                     fetch(url, {
-                        method: 'POST'
+                        method: 'POST'//用post方法送到指定URL
                     })
                         .then(function (res) { return res.text(); }) //取得傳回值，轉為文字
-                        .then(function (data) {
-                            console.log(data);
-                            that.loadList();
+                        .then(function (data) {//處理獲得的數據
+                            console.log(data); // 將數據記錄到控制台
+                            that.loadList();//呼叫loadlist把數據紀錄到列表
                         })
                 },
                 setEditUI: function (pro) {
                     this.newPro = pro;
-                    this.setUI('editForm');
+                    this.setUI('editForm');// 用 setUI 方法，將介面設置為 'editForm'
                 },
                 setAddUI: function () {
                     this.newPro = {

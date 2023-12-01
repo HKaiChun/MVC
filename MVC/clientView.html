@@ -58,9 +58,9 @@
 const todoApp= Vue.createApp({
 	data() {
 		return {
-			UI: 'main',
-			dat: [],
-			newPro: {
+			UI: 'main',// 表示當前的介面，初始為 'main'
+			dat: [],// 存放購物清單數據的陣列
+			newPro: {// 新增或編輯專案或購物清單時的預設數據
 				id: -1,
 				pName: '',
 				price: '',
@@ -86,7 +86,7 @@ const todoApp= Vue.createApp({
 	methods: {
 		loadList: function () {
 			const that=this; //this  ==> stands for vm6. let's save `this` to `that`
-			fetch('ManagementControll.php?act=listPro')
+			fetch('ManagementControll.php?act=listPro') // 使用 fetch 發送 GET 請求獲取列表
 			.then(function(response) {
 				return response.json();
 			})
@@ -98,8 +98,8 @@ const todoApp= Vue.createApp({
 			});
 		},
 		loadshoppingList: function () {
-			const that=this; //this  ==> stands for vm6. let's save `this` to `that`
-			fetch('ManagementControll.php?act=listshopping')
+			const that=this; //this  ==> stands for vm6. let's save `this` to `that`//// 將 this 保存到 that 中
+			fetch('ManagementControll.php?act=listshopping') // 使用 fetch 發送 GET 請求獲取購物清單
 			.then(function(response) {
 				return response.json();
 			})
@@ -110,22 +110,22 @@ const todoApp= Vue.createApp({
 				//vm6.dat = myJson;
 			});
 		},
-		delPro: function (id) {
+		delPro: function (id) {//刪除表格
 			const that=this;
-			let url="ManagementControll.php?act=delPro&id="+id;
+			let url="ManagementControll.php?act=delPro&id="+id; // 構建包含ID的URL，並以 POST 方法發送到指定的 URL
 			fetch(url,{
 				method: 'POST'
 			})
 			.then(function(res){return res.text(); }) //取得傳回值，轉為文字
 			.then(function(data){
-				console.log(data);
+				console.log(data);// 輸出傳回的數據到控制台
 				that.setUI1('editForm');
 				//that.loadshoppingList();
 			})
 		},
-		addPro: function () {
+		addPro: function () {//新增商品的方法
 			const that=this;
-			let mydat = new FormData();
+			let mydat = new FormData();// 使用 FormData 包裝購物車數據，並以 POST 方法發送到指定的 URL
 			mydat.append( "dat", JSON.stringify(this.newPro) );
 
 			let url="ManagementControll.php?act=addnum";
@@ -170,6 +170,7 @@ const todoApp= Vue.createApp({
 				//that.loadshoppingList();
 			})
 		},
+<<<<<<< HEAD
 		fetchTotalPrice: function() {
 			const that = this;
 			let url="ManagementControll.php?act=countP";
@@ -185,12 +186,15 @@ const todoApp= Vue.createApp({
 			})
 		},
 		setQanUI: function(pro) {
+=======
+		setQanUI: function(pro) { // 設置編輯介面的方法
+>>>>>>> 5d68c5a3aa31f80b5a322f5b09a0c7d0a3d09147
 			this.newPro=pro;
-			this.setUI('editForm2');
+			this.setUI('editForm2'); // 調用 setUI 方法，將介面設置為 'editForm2'
 		},
 		setUI: function(page) {
 			this.UI=page;
-			this.loadList();
+			this.loadList();//載入列表
 		},
 		setUI1: function(page) {
 			this.UI=page;
@@ -199,8 +203,12 @@ const todoApp= Vue.createApp({
 		
 	},
 	created() {
+<<<<<<< HEAD
 		this.loadList();
 		// setInterval(this.fetchTotalPrice, 3000);
+=======
+		this.loadList();//初始化專案列表
+>>>>>>> 5d68c5a3aa31f80b5a322f5b09a0c7d0a3d09147
 	}
 }).mount("#main");
 </script>
