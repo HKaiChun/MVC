@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2023-11-26 13:10:06
--- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 8.1.6
+-- 產生時間： 2023 年 12 月 15 日 07:29
+-- 伺服器版本： 10.4.28-MariaDB
+-- PHP 版本： 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,33 +28,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `shop` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `content` text DEFAULT NULL,
-  `number` int(11) NOT NULL,
-  `total` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id` int(10) NOT NULL,
+  `pName` varchar(30) NOT NULL,
+  `price` int(10) NOT NULL,
+  `description` varchar(30) NOT NULL,
+  `num` int(10) NOT NULL,
+  `total` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- 已傾印資料表的索引
+-- 傾印資料表的資料 `shop`
 --
 
---
-
---
-ALTER TABLE `shop`
-  ADD PRIMARY KEY (`id`);
-
---
--- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
---
-
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `shop`
---
-ALTER TABLE `shop`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+INSERT INTO `shop` (`id`, `pName`, `price`, `description`, `num`, `total`) VALUES
+(1, '大補丸', 3000, '給你力量', 55, 165000),
+(3, '滑鼠', 105, '滑動的老鼠', 20, 2100);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
