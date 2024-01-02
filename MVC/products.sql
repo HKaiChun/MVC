@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2023-11-26 12:24:25
+-- 產生時間： 2023 年 12 月 15 日 06:58
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -28,11 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `products` (
-  `id` int(4) NOT NULL,
+  `id` int(10) NOT NULL,
   `pName` varchar(30) NOT NULL,
-  `description` varchar(60) NOT NULL,
-  `price` int(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `description` varchar(30) NOT NULL,
+  `price` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 已傾印資料表的索引
@@ -43,6 +43,16 @@ CREATE TABLE `products` (
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
