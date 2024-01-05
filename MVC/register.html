@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <!-- 引入 Vue.js -->
+     <script type="text/javascript" src="https://unpkg.com/vue@next"></script>
+     <!-- 引入 JS-Cookie 用於處理 cookies -->
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+     <style>
+         body {
+             background-color: #E5E5E5; /* 設定頁面背景顏色為灰色 */
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             height: 100vh;
+             margin: 0;
+         }
+
+         .register-container {
+             background-color: white; /* 設定註冊容器背景顏色為白色 */
+             border: 2px solid #ccc; /* 設定邊框 */
+             border-radius: 10px; /* 設定圓角 */
+             padding: 60px;
+             text-align: center;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 設定陰影效果 */
+         }
+
+         .register-container input[type="text"],
+         .register-container input[type="password"] {
+             width: 100%;
+             padding: 5px;
+             margin: 10px 0;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+         }
+
+         .register-container input[type="submit"] {
+             background-color: #007bff; /* 設定提交按鈕背景顏色為藍色 */
+             color: white;
+             padding: 10px 20px;
+             border: none;
+             border-radius: 5px;
+             cursor: pointer;
+         }
+
+
+     </style>
+</head>
+<body>
+     <div class="register-container">
+         <h1>註冊</h1>
+         <form action="controller.php" method="post">
+             <input type="hidden" name="action" value="register">
+             帳號: <input type="text" name="username" required><br>
+             密碼: <input type="password" name="password" required><br>
+             <input type="submit" value="註冊">
+         </form>
+     </div>
+</body>
+</html>
