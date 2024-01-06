@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:8889
--- 產生時間： 2024 年 01 月 06 日 10:41
+-- 產生時間： 2024 年 01 月 06 日 15:59
 -- 伺服器版本： 5.7.39
 -- PHP 版本： 7.4.33
 
@@ -31,7 +31,7 @@ CREATE TABLE `user` (
   `id` int(10) NOT NULL,
   `username` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL
+  `user_type` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -40,7 +40,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `password`, `user_type`) VALUES
 (1, 'uu', 'uu', ''),
-(2, '33', '$2y$10$7LrVx0Q2j8xzQZNkQ/WTF./anfMBj9CnwoP3krYJUOnWqUAbliYQ6', '');
+(2, '33', '$2y$10$7LrVx0Q2j8xzQZNkQ/WTF./anfMBj9CnwoP3krYJUOnWqUAbliYQ6', ''),
+(3, '77', '$2y$10$a0DXufJueubF.UJv9YPLHO5CvjfaYSIeGoAQfYoY1.h.ziG3W/2eC', 'client'),
+(4, '1111', '$2y$10$xVXBZDyaCYJbbQTDejD.J.8dUcQaFLwlO/cjoYuwhYYQcPgXKrOem', 'merchant'),
+(5, '99', '$2y$10$chlN5y4yBCrRTGK8t5VwMeA.hER/AqniIDyFNGkW.RlaQrU7hh7Na', 'client');
 
 --
 -- 已傾印資料表的索引
@@ -60,7 +63,7 @@ ALTER TABLE `user`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
