@@ -1,6 +1,6 @@
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="text/javascript" src="https://unpkg.com/vue@next"></script>
+<script type="text/javascript" src="https://unpkg.com/vue@3.0.2"></script>
 </head>
 
 <body >
@@ -76,7 +76,7 @@ const todoApp= Vue.createApp({
                 // Only fetch the total price when UI is 'editForm'
                 this.fetchTotalPrice();
                 // Set up an interval to keep fetching the total price
-                this.totalPriceInterval = setInterval(this.fetchTotalPrice, 3000);
+                this.totalPriceInterval = setInterval(this.fetchTotalPrice, 100);
             } else {
                 // Clear the interval when UI is not 'editForm'
                 clearInterval(this.totalPriceInterval);
@@ -110,36 +110,6 @@ const todoApp= Vue.createApp({
 				//vm6.dat = myJson;
 			});
 		},
-		// delPro: function (id) {//刪除表格
-		// 	const that=this;
-		// 	let url="ManagementControll.php?act=delPro&id="+id; // 構建包含ID的URL，並以 POST 方法發送到指定的 URL
-		// 	fetch(url,{
-		// 		method: 'POST'
-		// 	})
-		// 	.then(function(res){return res.text(); }) //取得傳回值，轉為文字
-		// 	.then(function(data){
-		// 		console.log(data);// 輸出傳回的數據到控制台
-		// 		that.setUI1('editForm');
-		// 		//that.loadshoppingList();
-		// 	})
-		// },
-		// addPro: function () {//新增商品的方法
-		// 	const that=this;
-		// 	let mydat = new FormData();// 使用 FormData 包裝購物車數據，並以 POST 方法發送到指定的 URL
-		// 	mydat.append( "dat", JSON.stringify(this.newPro) );
-
-		// 	let url="ManagementControll.php?act=addnum";
-		// 	fetch(url,{
-		// 		method: 'POST',
-		// 		body: mydat // 將表單物件放入fetch的body屬性
-		// 	})
-		// 	.then(function(res){return res.text(); }) //取得傳回值，轉為文字
-		// 	.then(function(data){ 
-		// 		console.log(data);
-		// 		that.setUI('main');
-		// 		//that.loadList();
-		// 	})
-		// },
 		addJob: function () {
 			const that=this;
 			let mydat = new FormData();
@@ -200,7 +170,6 @@ const todoApp= Vue.createApp({
 	},
 	created() {
 		this.loadList();
-		// setInterval(this.fetchTotalPrice, 3000);
 	}
 }).mount("#main");
 </script>
