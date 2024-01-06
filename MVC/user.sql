@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:8889
--- 產生時間： 2024 年 01 月 01 日 07:21
+-- 產生時間： 2024 年 01 月 06 日 10:41
 -- 伺服器版本： 5.7.39
 -- PHP 版本： 7.4.33
 
@@ -28,18 +28,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `user` (
-  `id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `id` int(10) NOT NULL,
   `username` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-  `pwd` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `role` int(11) NOT NULL DEFAULT '0'
+  `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `pwd`, `role`) VALUES
-('1', 'uu', 'uu', 2);
+INSERT INTO `user` (`id`, `username`, `password`, `role`) VALUES
+(1, 'uu', 'uu', ''),
+(2, '33', '$2y$10$7LrVx0Q2j8xzQZNkQ/WTF./anfMBj9CnwoP3krYJUOnWqUAbliYQ6', '');
 
 --
 -- 已傾印資料表的索引
@@ -50,6 +51,16 @@ INSERT INTO `user` (`id`, `username`, `pwd`, `role`) VALUES
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

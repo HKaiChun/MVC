@@ -2,6 +2,8 @@
 <html>
 <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <script type="text/javascript" src="https://unpkg.com/vue@3.0.2"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
       <title>登錄</title>
       <style>
           body {
@@ -51,12 +53,14 @@
 </head>
 <body>
       <div class="login-container">
+          
           <h1>登錄</h1>
-          <form action="login_process.php" method="post">
+          <form action="controller.php" method="post">
+              <input type="hidden" name="action" value="login">
               帳號: <input type="text" name="username" required><br>
               密碼: <input type="password" name="password" required><br>
               <input type='button' value="註冊" onclick="window.location.href='register.html'" class="register-button" />
-              <input type="submit" value="登錄">
+              <input type="submit" value="登錄" >
           </form>
       </div>
 </body>
