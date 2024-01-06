@@ -31,14 +31,14 @@ CREATE TABLE `user` (
   `id` int(10) NOT NULL,
   `username` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(10) COLLATE utf8_unicode_ci NOT NULL
+  `user_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `role`) VALUES
+INSERT INTO `user` (`id`, `username`, `password`, `user_type`) VALUES
 (1, 'uu', 'uu', ''),
 (2, '33', '$2y$10$7LrVx0Q2j8xzQZNkQ/WTF./anfMBj9CnwoP3krYJUOnWqUAbliYQ6', '');
 
