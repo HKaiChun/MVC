@@ -34,7 +34,8 @@ CREATE TABLE `shop` (
   `description` varchar(30) NOT NULL,
   `num` int(10) NOT NULL,
   `total` int(20) NOT NULL,
-  `username` varchar(10) NOT NULL
+  `username` varchar(10) NOT NULL,
+  `merchant` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
