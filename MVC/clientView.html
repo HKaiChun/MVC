@@ -137,12 +137,13 @@ div#list, p #totalPrice {
 <div id="list" v-if="UI=='main'">
 	<h1>商品清單</h1>
 	<table border=1>
-		<tr><td>序號</td><td>商品名稱</td><td>單價</td><td>商品說明</td><td>-</td></tr>
+		<tr><td>序號</td><td>商品名稱</td><td>單價</td><td>商品說明</td><td>商家名稱</td><td>-</td></tr>
 		<tr v-for="pro in dat">
 			<td>{{pro.id}}</td>
 			<td>{{pro.pName}}</td>
 			<td>{{pro.price}}</td>
 			<td>{{pro.description}}</td>
+			<td>{{pro.merchant}}</td>
 			<td><button @click="setQanUI(pro)">加入購物車</button></td>
 		</tr>
 		<button class="view-cart-button" @click="setUI1('editForm')">查看購物車</button>
@@ -157,7 +158,7 @@ div#list, p #totalPrice {
 	<button @click="setUI('main')">返回商品清單</button>
 	<table border=1>
 	<tr><td>序號</td><td>商品名稱</td><td>單價</td><td>商品說明</td>
-		<td>數量</td><td>總價</td>
+		<td>數量</td><td>總價</td><td>商家名稱</td>
 		<td>-</td>
 	</tr>
 	<tr v-for="pro in dat">
@@ -167,6 +168,7 @@ div#list, p #totalPrice {
 		<td>{{pro.description}}</td>
 		<td>{{pro.num}}</td>
 		<td>{{pro.total}}</td>
+		<td>{{pro.merchant}}</td>
 		<td><button @click="delJob(pro.id)">刪</button></td>
 	</tr>
 </table>
@@ -217,7 +219,7 @@ const todoApp= Vue.createApp({
         },
     },
 	methods: {
-		readyToPay: function() {
+		readyToPay: function() { // 將購物車訂單寄送出去
 			var yes = confirm('Are You Sure?'); // 詢問是否確定送出訂單
 			if (yes) {
 				alert('Your order has been dispatched.');
