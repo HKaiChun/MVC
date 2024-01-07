@@ -75,7 +75,7 @@ function delJob($id)
 	mysqli_stmt_execute($stmt);  //執行SQL
 	return True;
 }
-function addJob($pName,$price,$description,$num,$id)
+function addJob($pName,$price,$description,$num,$id,$username)
 {
 	global $db;
     $total = $num*$price;
@@ -97,9 +97,9 @@ function addJob($pName,$price,$description,$num,$id)
 		mysqli_stmt_execute($stmt);
 		return true;
 	} else {
-		$sql = "insert into shop (pName, price,description,num, total, id) values (?, ?, ?, ?, ?, ?)"; //SQL中的 ? 代表未來要用變數綁定進去的地方
+		$sql = "insert into shop (pName, price,description,num, total, id, username) values (?, ?, ?, ?, ?, ?, ?)"; //SQL中的 ? 代表未來要用變數綁定進去的地方
 		$stmt = mysqli_prepare($db, $sql); //prepare sql statement
-		mysqli_stmt_bind_param($stmt, "sisiii", $pName, $price,$description,$num,$total,$id); //bind parameters with variables, with types "sss":string, string ,string
+		mysqli_stmt_bind_param($stmt, "sisiiis", $pName, $price,$description,$num,$total,$id,$username); //bind parameters with variables, with types "sss":string, string ,string
 		mysqli_stmt_execute($stmt);  //執行SQL
 		return True;
 	}
