@@ -14,11 +14,12 @@ function getLoadList()
     }
     return $rows;
 }
-function getJobList1() // 列出購物車項目
+function getJobList1($username) // 列出購物車項目
 {
 	global $db;
-	$sql = "select * from shop;";
+	$sql = "select * from shop where username =?;";
 	$stmt = mysqli_prepare($db, $sql ); //precompile sql指令，建立statement 物件，以便執行SQL
+	mysqli_stmt_bind_param($stmt, "s", $username);
 	mysqli_stmt_execute($stmt); //執行SQL
 	$result = mysqli_stmt_get_result($stmt); //取得查詢結果
 
@@ -104,13 +105,17 @@ function addJob($pName,$price,$description,$num,$id,$username)
 		return True;
 	}
 }
-function countTotalP()
+function countTotalP($username)
 {
 	global $db;
-	$sql = "select sum(total) as totalSum FROM `shop`";
-	$stmt = mysqli_query($db, $sql);
-	if ($stmt) {
-		$row = mysqli_fetch_assoc($stmt);
+	$sql = "select sum(total) as totalSum FROM `shop` where username=?";
+	$stmt = mysqli_prepare($db, $sql);
+	mysqli_stmt_bind_param($stmt, "s", $username);
+	mysqli_stmt_execute($stmt);
+	
+	$result = mysqli_stmt_get_result($stmt);
+	if ($result) {
+		$row = mysqli_fetch_assoc($result);
 		return $row['totalSum'];
 	} else {
 		// 錯誤處理

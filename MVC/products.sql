@@ -31,7 +31,8 @@ CREATE TABLE `products` (
   `id` int(10) NOT NULL,
   `pName` varchar(30) NOT NULL,
   `description` varchar(30) NOT NULL,
-  `price` int(10) NOT NULL
+  `price` int(10) NOT NULL,
+  `merchant` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

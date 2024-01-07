@@ -137,12 +137,13 @@ div#list, p #totalPrice {
 <div id="list" v-if="UI=='main'">
 	<h1>商品清單</h1>
 	<table border=1>
-		<tr><td>序號</td><td>商品名稱</td><td>單價</td><td>商品說明</td><td>-</td></tr>
+		<tr><td>序號</td><td>商品名稱</td><td>單價</td><td>商品說明</td><td>商家名稱</td><td>-</td></tr>
 		<tr v-for="pro in dat">
 			<td>{{pro.id}}</td>
 			<td>{{pro.pName}}</td>
 			<td>{{pro.price}}</td>
 			<td>{{pro.description}}</td>
+			<td>{{pro.merchant}}</td>
 			<td><button @click="setQanUI(pro)">加入購物車</button></td>
 		</tr>
 		<button class="view-cart-button" @click="setUI1('editForm')">查看購物車</button>
@@ -157,7 +158,7 @@ div#list, p #totalPrice {
 	<button @click="setUI('main')">返回商品清單</button>
 	<table border=1>
 	<tr><td>序號</td><td>商品名稱</td><td>單價</td><td>商品說明</td>
-		<td>數量</td><td>總價</td>
+		<td>數量</td><td>總價</td><td>商家名稱</td>
 		<td>-</td>
 	</tr>
 	<tr v-for="pro in dat">
@@ -167,10 +168,12 @@ div#list, p #totalPrice {
 		<td>{{pro.description}}</td>
 		<td>{{pro.num}}</td>
 		<td>{{pro.total}}</td>
+		<td>{{pro.merchant}}</td>
 		<td><button @click="delJob(pro.id)">刪</button></td>
 	</tr>
 </table>
 <p>總價:<span id="totalPrice"></span></p>
+<button @click="readyToPay()">PAY</button>
 </div>
 <div v-if="UI=='editForm2'">
 	商品名稱: {{newPro.pName}} <br/>
@@ -216,6 +219,15 @@ const todoApp= Vue.createApp({
         },
     },
 	methods: {
+		readyToPay: function() { // 將購物車訂單寄送出去
+			var yes = confirm('Are You Sure?'); // 詢問是否確定送出訂單
+			if (yes) {
+				alert('Your order has been dispatched.');
+				// 先把訂單寄出，再刪除目前購物車內容
+			} else {
+				alert('Cancelled');
+			}
+		},
 		getCookies: function() { // 取得cookie資訊
 			// Create a regular expression to match the 'client' cookie and its value
 			var regex = new RegExp('(^|; )client=([^;]*)');
@@ -245,7 +257,17 @@ const todoApp= Vue.createApp({
 		},
 		loadshoppingList: function () {
 			const that=this; //this  ==> stands for vm6. let's save `this` to `that`//// 將 this 保存到 that 中
-			fetch('ManagementControll.php?act=listshopping') // 使用 fetch 發送 GET 請求獲取購物清單
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue;
+			} else {
+			  alert('fail to add new item :(');
+			}
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
+			fetch('ManagementControll.php?act=listshopping',{method: 'POST',body: mydat}) // 使用 fetch 發送 GET 請求獲取購物清單
 			.then(function(response) {
 				return response.json();
 			})
@@ -298,9 +320,20 @@ const todoApp= Vue.createApp({
 		},
 		fetchTotalPrice: function() {
 			const that = this;
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue;
+			} else {
+			  alert('fail to add new item :(');
+			}
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
 			let url="ManagementControll.php?act=countP";
 			fetch(url, {
-				method: 'POST'
+				method: 'POST',
+				body: mydat
 			})
 			.then(response => response.text())
 			.then(data => {
