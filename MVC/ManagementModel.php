@@ -14,11 +14,12 @@ function getLoadList()
     }
     return $rows;
 }
-function getJobList1() // 列出購物車項目
+function getJobList1($username) // 列出購物車項目
 {
 	global $db;
-	$sql = "select * from shop;";
+	$sql = "select * from shop where username =?;";
 	$stmt = mysqli_prepare($db, $sql ); //precompile sql指令，建立statement 物件，以便執行SQL
+	mysqli_stmt_bind_param($stmt, "s", $username);
 	mysqli_stmt_execute($stmt); //執行SQL
 	$result = mysqli_stmt_get_result($stmt); //取得查詢結果
 

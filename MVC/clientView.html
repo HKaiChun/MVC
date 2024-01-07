@@ -245,7 +245,17 @@ const todoApp= Vue.createApp({
 		},
 		loadshoppingList: function () {
 			const that=this; //this  ==> stands for vm6. let's save `this` to `that`//// 將 this 保存到 that 中
-			fetch('ManagementControll.php?act=listshopping') // 使用 fetch 發送 GET 請求獲取購物清單
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue;
+			} else {
+			  alert('fail to add new item :(');
+			}
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
+			fetch('ManagementControll.php?act=listshopping',{method: 'POST',body: mydat}) // 使用 fetch 發送 GET 請求獲取購物清單
 			.then(function(response) {
 				return response.json();
 			})

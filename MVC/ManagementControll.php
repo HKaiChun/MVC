@@ -22,7 +22,9 @@ switch($act) {
         addnum($pro->pName, $pro->description,$pro->price,$pro->num,$pro->total,$pro->id);//把原本預設的代碼換成加入的資料
         return;
     case "listshopping":
-        $pro=getJobList1();
+        $proStr=$_POST['dat'];
+        $pro1=json_decode($proStr);
+        $pro=getJobList1($pro1->username);
         echo json_encode($pro);
         return;
     case "addJob":
