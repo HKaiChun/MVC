@@ -4,19 +4,22 @@ require 'model.php';
 $action = $_POST['action'];
 $username = $_POST['username'];
 $password = $_POST['password']; // 使用 "password" 作為表單欄位的名稱
+$user_type = $_POST['user_type'];
+
 if ($action === 'login') {
       $username = $_POST['username'];
       $password = $_POST['password']; // 使用 "password" 作為表單欄位的名稱
       $user_type = $_POST['user_type'];
       $model = new UserModel();
       $user = $model->getUserByUsername($username);
-      $user_type = $model->getUser_type($username);
+      $userType = $model->getUser_type($username,$user_type);
 
-      if ($user && password_verify($password, $user['password']) && $user_type === 'client') {
+      if ($user && password_verify($password, $user['password']) && $userType && $user_type=='client') {
         // 登入成功，跳到客户页面
         header("Location: http://localhost/MVC/MVC/clientView.html");
+        setcookie($user_type, $username, time() + 3600, '/'); // Adjust the expiration time as needed
         exit();
-    } elseif ($user && password_verify($password, $user['password']) && $user_type === 'merchant') {
+    } elseif ($user && password_verify($password, $user['password']) && $userType && $user_type=='merchant') {
         // 登入成功，跳到商家页面
         header("Location: http://localhost/MVC/MVC/ManagementView.html");
         exit();

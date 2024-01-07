@@ -20,11 +20,11 @@ class UserModel {
         $stmt->execute([$username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    public function getUser_type($username) {
-        $stmt = $this->conn->prepare("SELECT user_type FROM user WHERE username = ?");
-        $stmt->execute([$username]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['user_type'];
+    public function getUser_type($username,$user_type) {
+        $stmt = $this->conn->prepare("SELECT user_type FROM user WHERE username = ? AND user_type=?");
+        $stmt->execute([$username, $user_type]);
+        // $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function insertUser($username, $password,$user_type) {
         $stmt = $this->conn->prepare("INSERT INTO user (username, password,user_type) VALUES (?, ?,?)");
