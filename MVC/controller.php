@@ -17,7 +17,7 @@ if ($action === 'login') {
       if ($user && password_verify($password, $user['password']) && $userType && $user_type=='client') {
         // 登入成功，跳到客户页面
         header("Location: http://localhost/MVC/MVC/clientView.html");
-        setcookie($user_type, $username, time() + 3600, '/'); // Adjust the expiration time as needed
+        setcookie($user_type, $username, time() + 3600, '/'); // set cookie
         exit();
     } elseif ($user && password_verify($password, $user['password']) && $userType && $user_type=='merchant') {
         // 登入成功，跳到商家页面

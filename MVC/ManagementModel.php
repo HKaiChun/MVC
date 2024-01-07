@@ -14,7 +14,7 @@ function getLoadList()
     }
     return $rows;
 }
-function getJobList1()
+function getJobList1() // 列出購物車項目
 {
 	global $db;
 	$sql = "select * from shop;";
@@ -80,20 +80,20 @@ function addJob($pName,$price,$description,$num,$id,$username)
 	global $db;
     $total = $num*$price;
 	// 检查是否存在相同 id 的记录
-    $checkSql = "SELECT COUNT(*) FROM shop WHERE id = ?";
+    $checkSql = "SELECT COUNT(*) FROM shop WHERE id = ? AND username = ?";
     $checkStmt = mysqli_prepare($db, $checkSql);
-    mysqli_stmt_bind_param($checkStmt, "i", $id);
+    mysqli_stmt_bind_param($checkStmt, "is", $id, $username);
     mysqli_stmt_execute($checkStmt);
     
     mysqli_stmt_bind_result($checkStmt, $count);
     mysqli_stmt_fetch($checkStmt);
     mysqli_stmt_close($checkStmt);
 
-	// 如果存在相同 id 的记录
+	// 如果存在相同 id 、使用者的紀錄
 	if ($count > 0) {
-		$sql = "update shop set total = total + ?, num = num + ? where id = ?";
+		$sql = "update shop set total = total + ?, num = num + ? where id = ? AND username = ?";
 		$stmt = mysqli_prepare($db, $sql);
-		mysqli_stmt_bind_param($stmt, "iii", $total, $num, $id);
+		mysqli_stmt_bind_param($stmt, "iiis", $total, $num, $id, $username);
 		mysqli_stmt_execute($stmt);
 		return true;
 	} else {
