@@ -25,7 +25,8 @@
          }
 
          .register-container input[type="text"],
-         .register-container input[type="password"] {
+         .register-container input[type="password"],
+         .register-container select[type="text"] {
              width: 100%;
              padding: 5px;
              margin: 10px 0;
@@ -52,6 +53,11 @@
              <input type="hidden" name="action" value="register">
              帳號: <input type="text" name="username" required><br>
              密碼: <input type="password" name="password" required><br>
+             role: <select type="text" name="role" required>
+                <option value="">--choose a role--</option>
+                <option value="client">client</option>
+                <option value="manager">manager</option>
+              </select><br>
              <input type="submit" value="註冊">
          </form>
      </div>

@@ -8,7 +8,7 @@ class UserModel {
         // PDO是PHP用於存取資料庫的標準接口
         // 參數1: 資料庫的主機名稱與資料庫名，格式為 "mysql:host=主機名稱;dbname=資料庫名稱"
         
-        $this->conn = new PDO("mysql:host=localhost;dbname=test", "root", "root");
+        $this->conn = new PDO("mysql:host=localhost;dbname=test", "root", "");
    
         // 設定PDO的錯誤處理模式為拋出例外（Exception）
         // 這表示如果發生任何資料庫錯誤，PDO會拋出一個例外以供捕獲和處理
@@ -20,10 +20,17 @@ class UserModel {
         $stmt->execute([$username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
+    // 確認角色(商家 or 買家)是否正確
+    public function getUserRole($username, $role) {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE username=? AND role=?");
+        $stmt->execute([$username, $role]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-    public function insertUser($username, $password) {
-        $stmt = $this->conn->prepare("INSERT INTO user (username, password) VALUES (?, ?)");
-        $stmt->execute([$username, $password]);
+    public function insertUser($username, $password, $role) {
+        $stmt = $this->conn->prepare("INSERT INTO user (username, password, role) VALUES (?, ?, ?)");
+        $stmt->execute([$username, $password, $role]);
     }
 }
 ?>
