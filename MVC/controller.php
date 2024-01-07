@@ -14,13 +14,21 @@ if ($action === 'login') {
       $user = $model->getUserByUsername($username);
       $userType = $model->getUser_type($username,$user_type);
 
+<<<<<<< HEAD
+      if ($user && password_verify($password, $user['password']) && $user_type === 'client') {
+=======
       if ($user && password_verify($password, $user['password']) && $userType && $user_type=='client') {
         // 登入成功，跳到客户页面
+>>>>>>> b6b339da943e2db942483c9e258d2266b919d8ec
         header("Location: http://localhost/MVC/MVC/clientView.html");
         setcookie($user_type, $username, time() + 3600, '/'); // Adjust the expiration time as needed
         exit();
+<<<<<<< HEAD
+    } elseif ($user && password_verify($password, $user['password']) && $user_type === 'merchant') {
+=======
     } elseif ($user && password_verify($password, $user['password']) && $userType && $user_type=='merchant') {
         // 登入成功，跳到商家页面
+>>>>>>> b6b339da943e2db942483c9e258d2266b919d8ec
         header("Location: http://localhost/MVC/MVC/ManagementView.html");
         exit();
     } else {
@@ -40,5 +48,51 @@ elseif ($action === 'register') {
           header("Location: http://localhost/MVC/MVC/login.html?message=註冊成功！");
           exit();
                 }
+}
+$act = $_REQUEST['act'];
+switch($act) {
+    case "listPro":
+        $pro=getLoadList();
+        echo json_encode($pro);
+        return;
+    case "addPro":
+        $proStr=$_POST['dat'];// 從 POST 請求中獲取數據
+        $pro=json_decode($proStr);
+        addPro($pro->sender,$pro->receiver,$pro->status,$pro->shipment_id);//把原本預設的代碼換成加入的資料
+        return;
+    case "delPro":
+        $shipment_id=(int)$_REQUEST['shipment_id'];
+        delPro($shipment_id);//刪除指定id
+        return;
+    /*
+    case "addnum":
+        $proStr=$_POST['dat'];//從post中獲取資料
+        $pro=json_decode($proStr);
+        addnum($pro->pName, $pro->description,$pro->price,$pro->num,$pro->total,$pro->id);//把原本預設的代碼換成加入的資料
+        return;
+    
+    case "listshopping":
+        $pro=getJobList1();
+        echo json_encode($pro);
+        return;
+    */
+    case "addJob":
+        $proStr = $_POST['dat'];
+        $pro = json_decode($proStr);
+        //should verify first
+        addJob($pro->sender,$pro->receiver,$pro->status,$pro->shipment_id); //紀錄加入的工作
+        return;
+    case "delJob":
+        $shipment_id=(int)$_REQUEST['shipment_id']; //$_GET, $_REQUEST //獲取需要刪除id
+        //verify
+        delJob($shipment_id);
+        return;
+    /*
+    case "countP":
+        $totalP=countTotalP();
+        echo $totalP;
+        return;
+    */
+    default;
 }
 ?>

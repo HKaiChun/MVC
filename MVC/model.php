@@ -30,5 +30,33 @@ class UserModel {
         $stmt = $this->conn->prepare("INSERT INTO user (username, password,user_type) VALUES (?, ?,?)");
         $stmt->execute([$username, $password,$user_type]);
     }
+    // 在 model.php 中添加编辑和删除商品的函数
+
+    public function editJob($shipment_id,$sender,$receiver,$status) {
+        global $db;
+        $sql = "UPDATE shipments SET sender=?, receiver=?, status=? WHERE shipment_id=?";
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, "sssi", $sender,$receiver,$status, $shipment_id);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteJob($shipment_id) {
+        global $db;
+        $sql = "DELETE FROM shipments WHERE shipment_id=?";
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $shipment_id);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 ?>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="https://unpkg.com/vue@3.0.2"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+   <title>物流管理</title>
+</head>
+<body>
+<div id="main">
+<div id="list" v-if="UI=='main'">
+     <h1>物流管理</h1>
+    <table border="1">
+    <tr>
+        <th>訂單號碼</th>
+        <th>寄出者</th>
+        <th>收貨者</th>
+        <th>訂單狀態</th>    
+    </tr>
+    <tr v-for="job in dat">
+        <td>{{job.shipment_id}}</td>
+        <td>{{job.sender}}</td>
+        <td>{{job.receiver}}</td>
+        <td>{{job.status}}</td>
+        <td>
+            <td><button @click="delPro(pro.id)">刪除</button></td>
+            <td><button @click="setEditUI(pro)">編輯</button></td>
+        </td>
+    </tr>
+</div> 
+</div>
+    <div v-if="UI=='editForm'">
+        寄出者: <input type="text" v-model="newPro.sender" /> <br />
+        收貨者: <textarea v-model="newPro.receiver"></textarea><br>
+        訂單狀態: <input type="text" v-model="newPro.status" /><br>
+        <input type='button' @click="addPro()" value="save">
+    </div>
+
+</table>
+<script>
+const MaPro = Vue.createApp({
+    data() {
+        return {
+            UI: 'main',//介面初始值
+            dat: [],//存放數據的陣列
+            default: {//新增編輯前的預設值
+                shipment_id: -1,
+                sender: '',
+                receiver: '',
+                status: ''
+            }
+        }
+    },
+    methods: {
+        loadList: function () {
+            const that = this; //this  ==> stands for vm6. let's save `this` to `that`
+            fetch('controller.php?act=listPro')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    //we are inside the callback function, now `this` means the function, not vm6
+                    //we will use `that` to access vm6
+
+                    that.dat = myJson;
+                    //MaPro.dat = myJson;
+                });
+        },
+        addPro: function () {//新增內容
+            const that = this;
+            let mydat = new FormData();// 使用 FormData 包裝專案數據，並以 POST 方法發送到指定的 URL
+            mydat.append("dat", JSON.stringify(this.newPro));
+            let url = "controller.php?act=addPro";
+            fetch(url, {
+                method: 'POST',
+                body: mydat // 將表單物件放入fetch的body屬性
+            })
+                .then(function (res) { return res.text(); }) //取得傳回值，轉為文字
+                .then(function (data) {
+                    console.log(data);//輸出數據給控制台
+                    that.setUI('main');
+                    that.loadList();
+                })
+        },
+        delPro: function (id) {//刪除列表
+            const that = this;
+            let url = "controller.php?act=delPro&shipment_id=" + shipment_id;//用url加上參數id
+            fetch(url, {
+                method: 'POST'//用post方法送到指定URL
+            })
+                .then(function (res) { return res.text(); }) //取得傳回值，轉為文字
+                .then(function (data) {//處理獲得的數據
+                    console.log(data); // 將數據記錄到控制台
+                    that.loadList();//呼叫loadlist把數據紀錄到列表
+                })
+        },
+        setEditUI: function (pro) {
+            this.newPro = pro;
+            this.setUI('editForm');// 用 setUI 方法，將介面設置為 'editForm'
+        },
+        setAddUI: function () {
+            this.newPro = {
+                id: -1,
+                pName: '',
+                description: '',
+                price: ''
+            };
+            this.setUI('editForm');
+        },
+        setUI: function (page) {
+            this.UI = page;
+        },
+        created() {
+            this.loadList();
+        },
+    }
+    }).mount("#main");
+</script>
+</body>
+</html>
