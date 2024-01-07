@@ -30,9 +30,9 @@
 </div> 
 </div>
     <div v-if="UI=='editForm'">
-        寄出者: <input type="text" v-model="newPro.sender" /> <br />
-        收貨者: <textarea v-model="newPro.receiver"></textarea><br>
-        訂單狀態: <input type="text" v-model="newPro.status" /><br>
+        寄出者: <input type="text" v-model="default.sender" /> <br />
+        收貨者: <textarea v-model="default.receiver"></textarea><br>
+        訂單狀態: <input type="text" v-model="default.status" /><br>
         <input type='button' @click="addPro()" value="save">
     </div>
 
@@ -69,7 +69,7 @@ const MaPro = Vue.createApp({
         addPro: function () {//新增內容
             const that = this;
             let mydat = new FormData();// 使用 FormData 包裝專案數據，並以 POST 方法發送到指定的 URL
-            mydat.append("dat", JSON.stringify(this.newPro));
+            mydat.append("dat", JSON.stringify(this.default));
             let url = "controller.php?act=addPro";
             fetch(url, {
                 method: 'POST',
@@ -95,15 +95,15 @@ const MaPro = Vue.createApp({
                 })
         },
         setEditUI: function (pro) {
-            this.newPro = pro;
+            this.default = pro;
             this.setUI('editForm');// 用 setUI 方法，將介面設置為 'editForm'
         },
         setAddUI: function () {
-            this.newPro = {
-                id: -1,
-                pName: '',
-                description: '',
-                price: ''
+            this.default = {
+                shipment_id: -1,
+                sender: '',
+                receiver: '',
+                status: ''
             };
             this.setUI('editForm');
         },

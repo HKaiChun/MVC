@@ -14,21 +14,13 @@ if ($action === 'login') {
       $user = $model->getUserByUsername($username);
       $userType = $model->getUser_type($username,$user_type);
 
-<<<<<<< HEAD
-      if ($user && password_verify($password, $user['password']) && $user_type === 'client') {
-=======
       if ($user && password_verify($password, $user['password']) && $userType && $user_type=='client') {
         // 登入成功，跳到客户页面
->>>>>>> b6b339da943e2db942483c9e258d2266b919d8ec
         header("Location: http://localhost/MVC/MVC/clientView.html");
         setcookie($user_type, $username, time() + 3600, '/'); // Adjust the expiration time as needed
         exit();
-<<<<<<< HEAD
-    } elseif ($user && password_verify($password, $user['password']) && $user_type === 'merchant') {
-=======
     } elseif ($user && password_verify($password, $user['password']) && $userType && $user_type=='merchant') {
         // 登入成功，跳到商家页面
->>>>>>> b6b339da943e2db942483c9e258d2266b919d8ec
         header("Location: http://localhost/MVC/MVC/ManagementView.html");
         exit();
     } else {
