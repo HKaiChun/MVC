@@ -17,25 +17,24 @@
         <th>收貨者</th>
         <th>訂單狀態</th>    
     </tr>
-    <tr v-for="job in dat">
-        <td>{{job.shipment_id}}</td>
-        <td>{{job.sender}}</td>
-        <td>{{job.receiver}}</td>
-        <td>{{job.status}}</td>
+    <tr v-for="pro in dat">
+        <td>{{pro.shipment_id}}</td>
+        <td>{{pro.sender}}</td>
+        <td>{{pro.receiver}}</td>
+        <td>{{pro.status}}</td>
         <td>
-            <td><button @click="delPro(pro.id)">刪除</button></td>
+            <td><button @click="delPro(pro.shipment_id)">刪除</button></td>
             <td><button @click="setEditUI(pro)">編輯</button></td>
         </td>
     </tr>
 </div> 
 </div>
     <div v-if="UI=='editForm'">
-        寄出者: <input type="text" v-model="default.sender" /> <br />
-        收貨者: <textarea v-model="default.receiver"></textarea><br>
-        訂單狀態: <input type="text" v-model="default.status" /><br>
+        寄出者: <input type="text" v-model="default_order.sender" /> <br />
+        收貨者: <textarea v-model="default_order.receiver"></textarea><br>
+        訂單狀態: <input type="text" v-model="default_order.status" /><br>
         <input type='button' @click="addPro()" value="save">
     </div>
-
 </table>
 <script>
 const MaPro = Vue.createApp({
@@ -43,7 +42,7 @@ const MaPro = Vue.createApp({
         return {
             UI: 'main',//介面初始值
             dat: [],//存放數據的陣列
-            default: {//新增編輯前的預設值
+            default_order: {//新增編輯前的預設值
                 shipment_id: -1,
                 sender: '',
                 receiver: '',
@@ -58,18 +57,17 @@ const MaPro = Vue.createApp({
                 .then(function (response) {
                     return response.json();
                 })
-                .then(function (myJson) {
+                .then(function () {
                     //we are inside the callback function, now `this` means the function, not vm6
                     //we will use `that` to access vm6
-
                     that.dat = myJson;
                     //MaPro.dat = myJson;
-                });
+                })
         },
         addPro: function () {//新增內容
             const that = this;
             let mydat = new FormData();// 使用 FormData 包裝專案數據，並以 POST 方法發送到指定的 URL
-            mydat.append("dat", JSON.stringify(this.default));
+            mydat.append("dat", JSON.stringify(this.default_order));
             let url = "controller.php?act=addPro";
             fetch(url, {
                 method: 'POST',
@@ -82,7 +80,7 @@ const MaPro = Vue.createApp({
                     that.loadList();
                 })
         },
-        delPro: function (id) {//刪除列表
+        delPro: function (shipment_id) {//刪除列表
             const that = this;
             let url = "controller.php?act=delPro&shipment_id=" + shipment_id;//用url加上參數id
             fetch(url, {
@@ -95,11 +93,11 @@ const MaPro = Vue.createApp({
                 })
         },
         setEditUI: function (pro) {
-            this.default = pro;
+            this.default_order = pro;
             this.setUI('editForm');// 用 setUI 方法，將介面設置為 'editForm'
         },
         setAddUI: function () {
-            this.default = {
+            this.default_order = {
                 shipment_id: -1,
                 sender: '',
                 receiver: '',
@@ -110,10 +108,10 @@ const MaPro = Vue.createApp({
         setUI: function (page) {
             this.UI = page;
         },
+    },
         created() {
             this.loadList();
-        },
-    }
+        }
     }).mount("#main");
 </script>
 </body>

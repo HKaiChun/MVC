@@ -41,6 +41,7 @@ elseif ($action === 'register') {
           exit();
                 }
 }
+
 $act = $_REQUEST['act'];
 switch($act) {
     case "listPro":
@@ -87,4 +88,5 @@ switch($act) {
     */
     default;
 }
+
 ?>

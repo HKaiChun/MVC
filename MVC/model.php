@@ -1,4 +1,5 @@
 <?php
+require('dbconfig.php');
 class UserModel {
     private $conn;
 
@@ -13,7 +14,7 @@ class UserModel {
         // 設定PDO的錯誤處理模式為拋出例外（Exception）
         // 這表示如果發生任何資料庫錯誤，PDO會拋出一個例外以供捕獲和處理
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-   }
+    }
 
     public function getUserByUsername($username) {
         $stmt = $this->conn->prepare("SELECT * FROM user WHERE username = ?");
@@ -31,32 +32,43 @@ class UserModel {
         $stmt->execute([$username, $password,$user_type]);
     }
     // 在 model.php 中添加编辑和删除商品的函数
-
-    public function editJob($shipment_id,$sender,$receiver,$status) {
+    function getLoadList()
+    {
         global $db;
-        $sql = "UPDATE shipments SET sender=?, receiver=?, status=? WHERE shipment_id=?";
-        $stmt = mysqli_prepare($db, $sql);
-        mysqli_stmt_bind_param($stmt, "sssi", $sender,$receiver,$status, $shipment_id);
-        
-        if (mysqli_stmt_execute($stmt)) {
-            return true;
-        } else {
-            return false;
+        $sql = "select * from shipments;";
+        $stmt = mysqli_prepare($db, $sql); // precompile SQL 指令
+        mysqli_stmt_execute($stmt); // 执行 SQL
+        $result = mysqli_stmt_get_result($stmt); // 取得查询结果
+
+        $rows = array(); // 要返回的数组
+        while ($r = mysqli_fetch_assoc($result)) {
+            $rows[] = $r; // 将此笔数据新增到数组中
         }
+        return $rows;
     }
 
-    public function deleteJob($shipment_id) {
+    function addPro($sender, $receiver, $status,$shipment_id) {
         global $db;
-        $sql = "DELETE FROM shipments WHERE shipment_id=?";
-        $stmt = mysqli_prepare($db, $sql);
-        mysqli_stmt_bind_param($stmt, "i", $shipment_id);
-        
-        if (mysqli_stmt_execute($stmt)) {
-            return true;
+        if($shipment_id>0) {
+            $sql = "update shipments set sender=?, receiver=?, status=? where shipment_id=?"; //SQL中的 ? 代表未來要用變數綁定進去的地方
+            $stmt = mysqli_prepare($db, $sql); //prepare sql statement
+            mysqli_stmt_bind_param($stmt, "sssi", $sender, $receiver,$status,$shipment_id); //bind parameters with variables, with types "sss":string, string ,string
         } else {
-            return false;
+            $sql = "insert into shipments (sender, receiver, status) values (?, ?, ?)"; //SQL中的 ? 代表未來要用變數綁定進去的地方
+            $stmt = mysqli_prepare($db, $sql); //prepare sql statement
+            mysqli_stmt_bind_param($stmt, "sss", $sender, $receiver,$status); //bind parameters with variables, with types "sss":string, string ,string
         }
+        mysqli_stmt_execute($stmt);  //執行SQL
+        return True;
     }
-
+    
+    function delPro($shipment_id) {
+        global $db;
+        $sql = "delete from shipments where shipment_id=?;"; //SQL中的 ? 代表未來要用變數綁定進去的地方
+        $stmt = mysqli_prepare($db, $sql); //prepare sql statement
+        mysqli_stmt_bind_param($stmt, "i", $shipment_id); //bind parameters with variables, with types "sss":string, string ,string
+        mysqli_stmt_execute($stmt);  //執行SQL
+        return True;
+    }
 }
 ?>
