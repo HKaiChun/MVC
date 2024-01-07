@@ -5,14 +5,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://unpkg.com/vue@3.0.2"></script> <!-- 為了使用 Vue -->
-    <title>ManagementProducts</title>
+    <title>商家商品管理</title>
+    <style>
+    /* 將整個頁面內容置中 */
+    body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+    
+    /* 標題樣式 */
+    h1 {
+         color: #5a5158; /* 標題顏色 */
+         text-align: center;
+    }
+    
+    /* 按鈕樣式 */
+    button {
+         background-color: #678F8D; /* 背景顏色 */
+         color: #fff; /* 文字顏色 */
+         border: none;
+         border-radius: 5px;
+         padding: 10px 20px;
+         cursor: pointer;
+         font-size: 16px;
+    }
+    
+    /* 表格樣式 */
+    table {
+     background-color: #E5E5E5;
+     color : #5a5158;
+     width: 800px;
+     border-collapse: collapse;
+     margin-top: 20px;
+     border: 2px solid #ddd; /* 新增表格邊框 */
+     border-radius: 5px; /* 新增圓角框 */
+}
+
+table, th, td {
+     border: 1px solid #ddd;
+}
+
+th, td {
+     padding: 10px;
+     text-align: center;
+}
+
+/* 表單樣式 */
+form {
+     text-align: center;
+}
+
+/* 輸入框樣式 */
+input[type="text"],
+input[type="password"],
+textarea,
+input[type="number"] {
+     width: 100%;
+     padding: 5px;
+     margin: 10px 0;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+}
+</style>
 </head>
 
 <body>
     <div id="main">
         <div id="list" v-if="UI=='main'">
-            <h1>This is the main page.</h1>
-            <button @click="setAddUI()">Load Add Form</button>
+            <h1>商品列表</h1>
+            <button @click="setAddUI()">增加商品</button>
             <table border=1>
                 <tr>
                     <td>id</td>

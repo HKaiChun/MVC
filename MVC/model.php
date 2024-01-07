@@ -20,6 +20,7 @@ class UserModel {
         $stmt->execute([$username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+<<<<<<< HEAD
     
     // 確認角色(商家 or 買家)是否正確
     public function getUserRole($username, $role) {
@@ -31,6 +32,17 @@ class UserModel {
     public function insertUser($username, $password, $role) {
         $stmt = $this->conn->prepare("INSERT INTO user (username, password, role) VALUES (?, ?, ?)");
         $stmt->execute([$username, $password, $role]);
+=======
+    public function getUser_type($username) {
+        $stmt = $this->conn->prepare("SELECT user_type FROM user WHERE username = ?");
+        $stmt->execute([$username]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['user_type'];
+    }
+    public function insertUser($username, $password,$user_type) {
+        $stmt = $this->conn->prepare("INSERT INTO user (username, password,user_type) VALUES (?, ?,?)");
+        $stmt->execute([$username, $password,$user_type]);
+>>>>>>> 0f0020848e79040dc44406e0de0224253ea04c27
     }
 }
 ?>
