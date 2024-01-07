@@ -1,6 +1,134 @@
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="https://unpkg.com/vue@3.0.2"></script>
+<title>顧客商品頁面</title>
+<style>
+    /* 將整個頁面內容置中 */
+    body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+    
+    /* 標題樣式 */
+    h1 {
+         color: #5a5158; /* 標題顏色 */
+         text-align: center;
+		 font-size: 30px;
+    }
+    
+    /* 按鈕樣式 */
+    button {
+         background-color: #678F8D; /* 背景顏色 */
+         color: #fff; /* 文字顏色 */
+         border: none;
+         border-radius: 5px;
+         padding: 10px 20px;
+         cursor: pointer;
+         font-size: 16px;
+    }
+	/* 查看購物車按鈕樣式 */
+	.view-cart-button {
+     background-color: #FF5733; /* 背景顏色 */
+     color: #fff; /* 文字顏色 */
+     border: none;
+     border-radius: 5px;
+     padding: 10px 20px;
+     cursor: pointer;
+     font-size: 18px; /* 自訂按鈕字體大小 */
+     /* 可以新增其他樣式屬性 */
+	 position: absolute; /* 使用绝对定位 */
+     left: 150px;
+}    /* 表格樣式 */
+    table {
+     background-color: #E5E5E5;
+     color : #5a5158;
+     width: 800px;
+     border-collapse: collapse;
+     margin-top: 20px;
+     border: 2px solid #ddd; /* 新增表格邊框 */
+     border-radius: 5px; /* 新增圓角框 */
+}
+
+table, th, td {
+     border: 1px solid #ddd;
+}
+
+th, td {
+     padding: 10px;
+     text-align: center;
+}
+
+/* 表單樣式 */
+form {
+     text-align: center;
+}
+
+/* 輸入框樣式 */
+input[type="text"],
+input[type="password"],
+textarea,
+input[type="number"] {
+     width: 100%;
+     padding: 5px;
+     margin: 10px 0;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+}
+/* 購物車頁面標題樣式 */
+div#list h1 {
+    color: #5a5158;
+    text-align: center;
+    margin-bottom: 20px; /* 增加標題與表格之間的間距 */
+}
+
+/* 返回商品清单按鈕樣式 */
+div#list button {
+    background-color: #678F8D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px; /* 增加按钮與表格之間的間距 */
+}
+
+/* 購物車表格樣式 */
+div#list table {
+    background-color: #E5E5E5;
+    color: #5a5158;
+    width: 800px;
+    border-collapse: collapse;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+div#list table, div#list th, div#list td {
+    border: 1px solid #ddd;
+}
+
+div#list th, div#list td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* 總價段落樣式 */
+div#list, p #totalPrice {
+    text-align: center;
+	color: #5a5158;
+    font-weight: bold; /* 加粗文字 */
+    font-size: 24px; /* 增大字體大小 */
+}
+
+</style>
 </head>
 
 <body >
@@ -17,7 +145,7 @@
 			<td>{{pro.description}}</td>
 			<td><button @click="setQanUI(pro)">加入購物車</button></td>
 		</tr>
-		<button @click="setUI1('editForm')">查看購物車</button>
+		<button class="view-cart-button" @click="setUI1('editForm')">查看購物車</button>
 	</table>
 </div>
 
