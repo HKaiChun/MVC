@@ -147,7 +147,10 @@ div#list, p #totalPrice {
 		</tr>
 		<button class="view-cart-button" @click="setUI1('editForm')">查看購物車</button>
 	</table>
+	<br>
+	<button @click="getCookies()">getCookiesValue</button>
 </div>
+
 
 <div v-if="UI=='editForm'">
 	<h1>我的購物車</h1>
@@ -194,7 +197,8 @@ const todoApp= Vue.createApp({
 				price: '',
 				description: '',
 				num: 0,
-				total: 0
+				total: 0,
+				username: ''
 			}
 		}
 	},
@@ -212,6 +216,20 @@ const todoApp= Vue.createApp({
         },
     },
 	methods: {
+		getCookies: function() { // 取得cookie資訊
+			// Create a regular expression to match the 'client' cookie and its value
+			var regex = new RegExp('(^|; )client=([^;]*)');
+			// Use the regular expression to find a match in the document.cookie string
+			var match = document.cookie.match(regex);
+
+			// If a match is found, log the value of the 'client' cookie, otherwise log a message
+			if (match) {
+			  var clientValue = match[2];
+			  console.log('Value of the "client" cookie:', clientValue); // client's name
+			} else {
+			  console.log('Cookie "client" not found');
+			}
+		},
 		loadList: function () {
 			const that=this; //this  ==> stands for vm6. let's save `this` to `that`
 			fetch('ManagementControll.php?act=listPro') // 使用 fetch 發送 GET 請求獲取列表
@@ -240,6 +258,16 @@ const todoApp= Vue.createApp({
 		},
 		addJob: function () {
 			const that=this;
+			
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue; // 紀錄誰把商品放入自己的購物車中
+			} else {
+			  alert('fail to add new item :(');
+			}
+
 			let mydat = new FormData();
 			mydat.append( "dat", JSON.stringify(this.newPro) );
 
@@ -284,6 +312,7 @@ const todoApp= Vue.createApp({
 		},
 		setQanUI: function(pro) {
 			this.newPro=pro;
+			// this.newPro.username='123'; // 先將名字放入newPro
 			this.setUI('editForm2'); // 調用 setUI 方法，將介面設置為 'editForm2'
 		},
 		setUI: function(page) {

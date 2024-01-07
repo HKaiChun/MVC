@@ -25,7 +25,8 @@
           }
 
           .login-container input[type="text"],
-          .login-container input[type="password"] {
+          .login-container input[type="password"],
+          .login-container select[type="text"] {
               width: 100%;
               padding: 5px;
               margin: 10px 0;
@@ -53,14 +54,13 @@
 </head>
 <body>
       <div class="login-container">
-          
           <h1>登錄</h1>
           <form action="controller.php" method="post">
               <input type="hidden" name="action" value="login">
               帳號: <input type="text" name="username" required><br>
               密碼: <input type="password" name="password" required><br>
               用戶: 
-              <select name="user_type">
+              <select type="text" name="user_type" required>
                   <option value="client">客戶</option>
                   <option value="merchant">商家</option>
               </select><br>
