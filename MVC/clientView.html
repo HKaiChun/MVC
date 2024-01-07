@@ -171,6 +171,7 @@ div#list, p #totalPrice {
 	</tr>
 </table>
 <p>總價:<span id="totalPrice"></span></p>
+<button @click="readyToPay()">PAY</button>
 </div>
 <div v-if="UI=='editForm2'">
 	商品名稱: {{newPro.pName}} <br/>
@@ -216,6 +217,15 @@ const todoApp= Vue.createApp({
         },
     },
 	methods: {
+		readyToPay: function() {
+			var yes = confirm('Are You Sure?'); // 詢問是否確定送出訂單
+			if (yes) {
+				alert('Your order has been dispatched.');
+				// 先把訂單寄出，再刪除目前購物車內容
+			} else {
+				alert('Cancelled');
+			}
+		},
 		getCookies: function() { // 取得cookie資訊
 			// Create a regular expression to match the 'client' cookie and its value
 			var regex = new RegExp('(^|; )client=([^;]*)');
@@ -308,9 +318,20 @@ const todoApp= Vue.createApp({
 		},
 		fetchTotalPrice: function() {
 			const that = this;
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue;
+			} else {
+			  alert('fail to add new item :(');
+			}
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
 			let url="ManagementControll.php?act=countP";
 			fetch(url, {
-				method: 'POST'
+				method: 'POST',
+				body: mydat
 			})
 			.then(response => response.text())
 			.then(data => {

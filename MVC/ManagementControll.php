@@ -39,7 +39,9 @@ switch($act) {
         delJob($id);
         return;
     case "countP":
-        $totalP=countTotalP();
+        $proStr=$_POST['dat'];
+        $pro=json_decode($proStr);
+        $totalP=countTotalP($pro->username);
         echo $totalP;
         return;
     default;
