@@ -33,17 +33,18 @@ CREATE TABLE `shop` (
   `price` int(10) NOT NULL,
   `description` varchar(30) NOT NULL,
   `num` int(10) NOT NULL,
-  `total` int(20) NOT NULL
+  `total` int(20) NOT NULL,
+  `username` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `shop`
 --
 
-INSERT INTO `shop` (`id`, `pName`, `price`, `description`, `num`, `total`) VALUES
-(1, '大補丸', 3000, '給你力量', 55, 165000),
-(3, '滑鼠', 105, '滑動的老鼠', 20, 2100);
-COMMIT;
+-- INSERT INTO `shop` (`id`, `pName`, `price`, `description`, `num`, `total`) VALUES
+-- (1, '大補丸', 3000, '給你力量', 55, 165000),
+-- (3, '滑鼠', 105, '滑動的老鼠', 20, 2100);
+-- COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
