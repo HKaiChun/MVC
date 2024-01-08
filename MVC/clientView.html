@@ -152,7 +152,6 @@ div#list, p #totalPrice {
 	<button>已完成的訂單</button>
 </div>
 
-
 <div v-if="UI=='editForm'">
 	<h1>我的購物車</h1>
 	<button @click="setUI('main')">返回商品清單</button>
@@ -175,6 +174,7 @@ div#list, p #totalPrice {
 <p>總價:<span id="totalPrice"></span></p>
 <button @click="readyToPay()">PAY</button>
 </div>
+
 <div v-if="UI=='editForm2'">
 	商品名稱: {{newPro.pName}} <br/>
 
@@ -239,7 +239,6 @@ const todoApp= Vue.createApp({
     },
 	methods: {
 		checkOrder: function(){ // 查看訂單狀態
-			// 還沒寫完
 			const that=this;
 			var name = new RegExp('(^|; )client=([^;]*)');
 			var match = document.cookie.match(name);
@@ -260,11 +259,38 @@ const todoApp= Vue.createApp({
 				that.dat = myJson;
 			});
 		},
+		sendTransit: function() { // 將購物車訂單移到訂單狀態(結帳)
+			const that=this;
+			
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue;
+			} else {
+				alert('fail to add new item :(');
+			}
+
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
+
+			let url="ManagementControll.php?act=sendTransit";
+			fetch(url,{
+				method: 'POST',
+				body: mydat // 將表單物件放入fetch的body屬性
+			})
+			.then(function(res){return res.text(); }) //取得傳回值，轉為文字
+			.then(function(data){ 
+				console.log(data);
+				that.setUI('main');
+			})
+		},
 		readyToPay: function() { // 將購物車訂單寄送出去
 			var yes = confirm('Are You Sure?'); // 詢問是否確定送出訂單
 			if (yes) {
 				alert('Your order has been dispatched.');
 				// 把購物車訂單送去transit(運送中訂單)，再刪除目前購物車內容
+				this.sendTransit();
 			} else {
 				alert('Cancelled');
 			}

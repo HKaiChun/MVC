@@ -1,9 +1,24 @@
 <?php
 require('dbconfig.php');
-function getTransit() {
+function sendTransit($username) {
 	global $db;
-	$sql = "select * from transit;";
+	$sql = "INSERT INTO transit (pName, price, num, total, merchant, username, status) SELECT pName, price, num, total, merchant, username, 'sent' FROM shop WHERE username = ?;";
+	$stmt = mysqli_prepare($db, $sql);
+	mysqli_stmt_bind_param($stmt, "s", $username);
+	mysqli_stmt_execute($stmt); //執行SQL
+	
+	$sql = "delete from shop where username=?";
+	$stmt = mysqli_prepare($db, $sql);
+	mysqli_stmt_bind_param($stmt, "s", $username);
+	mysqli_stmt_execute($stmt); //執行SQL
+
+	return true;
+}
+function getTransit($username) {
+	global $db;
+	$sql = "select * from transit where username=?;";
 	$stmt = mysqli_prepare($db, $sql); //precompile sql指令，建立statement 物件，以便執行SQL
+	mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt); //執行SQL
     $result = mysqli_stmt_get_result($stmt); //取得查詢結果
 
