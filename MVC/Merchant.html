@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://unpkg.com/vue@3.4.5"></script>
+</head>
+
+<body>
+    <hr />
+    <div id="main">
+        <!-- 主頁面 -->
+        <div v-if="UI === 'main'">
+            <h1>This is the main page.</h1>
+            <!-- 切換至新增表單頁面的按鈕 -->
+            <button @click="setAddUI">Load Add Form</button>
+            <!-- 切換至訂單狀態頁面的按鈕 -->
+            <button @click="setOrderUI">showOrder</button>
+            <!-- 商品列表的表格 -->
+            <table border="1">
+                <tr>
+                    <td>序號</td>
+                    <td>商品名稱</td>
+                    <td>單價</td>
+                    <td>商品說明</td>
+                    <td>-</td>
+                </tr>
+                <!-- 列出商品資料 -->
+                <tr v-for="job in dat" :key="job.id">
+                    <td>{{ job.id }}</td>
+                    <td>{{ job.name }}</td>
+                    <td>{{ job.price }}</td>
+                    <td>{{ job.content }}</td>
+                    <!-- 操作列：刪除和編輯按鈕 -->
+                    <td>
+                        <button @click="delJob(job.id)">刪</button>
+                        <button @click="setEditUI(job)">改</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- 訂單狀態頁面 -->
+        <div v-if="UI === 'status'">
+            <h1>This is the main page.</h1>
+            <!-- 切換回主頁面的按鈕 -->
+            <button @click="setResetUI">listForm</button>
+            <!-- 訂單狀態列表的表格 -->
+            <table border="1">
+                <tr>
+                    <td>序號</td>
+                    <td>商品</td>
+                    <td>總額</td>
+                    <td>客戶序號</td>
+                    <td>狀態</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <!-- 列出訂單狀態資料 -->
+                <tr v-for="job in dat" :key="job.id">
+                    <td>{{ job.id }}</td>
+                    <td>{{ job.commodity }}</td>
+                    <td>{{ job.total }}</td>
+                    <td>{{ job.userId }}</td>
+                    <td>{{ job.status }}</td>
+                    <!-- 操作列：標記為處理中和標記為寄送中按鈕 -->
+                    <td><button @click="setS1(job.id)">把狀態標記為處理中</button></td>
+                    <td><button @click="setS2(job.id)">把狀態標記為寄送中</button></td>
+                </tr>
+            </table>
+        </div>
+        <!-- 編輯表單頁面 -->
+        <div v-if="UI === 'editForm' || UI === 'editForm2'">
+            <div>
+                <!-- 商品名稱輸入框 -->
+                <label for="jobName">商品名稱:</label>
+                <input type="text" id="jobName" v-model="newJob.name" />
+            </div>
+            <div>
+                <!-- 單價輸入框 -->
+                <label for="jobPrice">單價:</label>
+                <input type="text" id="jobPrice" v-model="newJob.price" />
+            </div>
+            <div>
+                <!-- 商品說明文本區域 -->
+                <label for="jobContent">商品說明:</label>
+                <textarea id="jobContent" v-model="newJob.content"></textarea>
+            </div>
+            <!-- 儲存按鈕 -->
+            <input type="button" @click="UI === 'editForm' ? addJob() : updateJob()" value="save">
+        </div>
+    </div>
+    <script>
+        const todoApp = Vue.createApp({
+            data() {
+                return {
+                    UI: 'main', // 當前頁面狀態
+                    dat: [],    // 商品數據列表
+                    newJob: {   // 新增或編輯的商品數據
+                        id: -1,
+                        name: '',
+                        price: '',
+                        content: ''
+                    }
+                };
+            },
+            methods: {
+                // 載入商品列表
+                loadList() {
+                    fetch('merchantControl.php?act=listJob')
+                        .then(response => response.json())
+                        .then(myJson => {
+                            this.dat = myJson;
+                        });
+                },
+                // 刪除商品
+                delJob(id) {
+                    fetch(`merchantControl.php?act=delJob&id=${id}`, {
+                        method: 'POST'
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            console.log(data);
+                            this.loadList();
+                        });
+                },
+                // 新增商品
+                addJob() {
+                    const mydat = new FormData();
+                    mydat.append("dat", JSON.stringify(this.newJob));
+
+                    fetch('merchantControl.php?act=addJob', {
+                        method: 'POST',
+                        body: mydat
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            console.log(data);
+                            this.setUI('main');
+                            this.loadList();
+                        });
+                },
+                // 修改商品
+                updateJob() {
+                    const mydat = new FormData();
+                    mydat.append("dat", JSON.stringify(this.newJob));
+
+                    fetch(`merchantControl.php?act=updateJob&id=${this.newJob.id}`, {
+                        method: 'POST',
+                        body: mydat
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            console.log(data);
+                            this.setUI('main');
+                            this.loadList();
+                        });
+                },
+                // 設定編輯表單UI
+                setEditUI(job) {
+                    this.newJob = { ...job };
+                    this.setUI('editForm2');
+                },
+                // 設定新增表單UI
+                setAddUI() {
+                    this.newJob = {
+                        id: -1,
+                        name: '',
+                        price: '',
+                        content: ''
+                    };
+                    this.setUI('editForm');
+                },
+                // 設定訂單狀態UI
+                setOrderUI() {
+                    fetch('merchantControl.php?act=gOrder')
+                        .then(response => response.json())
+                        .then(myJson => {
+                            this.dat = myJson;
+                        });
+                    this.setUI('status');
+                },
+                // 將狀態登記為處理中
+                setS1(id) {
+                    fetch(`merchantControl.php?act=register1&id=${id}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(id);
+                            this.setOrderUI();
+                        });
+                },
+                // 將狀態登記為寄送中
+                setS2(id) {
+                    fetch(`merchantControl.php?act=register2&id=${id}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(id);
+                            this.setOrderUI();
+                        });
+                },
+                // 重置UI為主頁面
+                setResetUI() {
+                    this.loadList();
+                    this.setUI('main');
+                },
+                // 設定當前UI
+                setUI(page) {
+                    this.UI = page;
+                }
+            },
+            created() {
+                // 在應用程序創建時載入商品列表
+                this.loadList();
+            }
+        }).mount("#main");
+    </script>
+</body>
+
+</html>
