@@ -150,7 +150,8 @@ div#list, p #totalPrice {
 	</table>
 	<br>
 	<button @click="getCookies()">getCookiesValue</button><br><!--  測試用 -->
-	<button @click="checkOrder()">訂單狀態</button>&emsp;<button>已完成的訂單</button>
+	<button @click="setUICheck('transitForm')">訂單狀態</button>&emsp; <!--訂單狀態表格-->
+	<button>已完成的訂單</button>
 </div>
 
 
@@ -187,6 +188,25 @@ div#list, p #totalPrice {
 
 	<input type='button' @click="addJob(pro)" value="save">
 </div>
+
+<div v-if="UI=='transitForm'"> <!--訂單狀態表格-->
+	<table border="1">
+	<tr>
+		<td>序號</td><td>商品名稱</td><td>價格</td><td>數量</td><td>總價</td><td>商家名稱</td><td>訂單狀態</td><td>使用者</td>
+	</tr>
+	<tr v-for="pro in dat">
+		<td>{{pro.id}}</td>
+		<td>{{pro.pName}}</td>
+		<td>{{pro.price}}</td>
+		<td>{{pro.num}}</td>
+		<td>{{pro.total}}</td>
+		<td>{{pro.merchant}}</td>
+		<td>{{pro.status}}</td>
+		<td>{{pro.username}}</td>
+	</tr>
+	</table>
+	<button @click="setUI('main')">返回商品清單</button>
+</div>
 </div>
 
 <script>
@@ -221,13 +241,32 @@ const todoApp= Vue.createApp({
     },
 	methods: {
 		checkOrder: function(){ // 查看訂單狀態
-			// 還沒寫
+			// 還沒寫完
+			const that=this;
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue;
+			} else {
+				alert('fail to add new item :(');
+			}
+
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
+			fetch('ManagementControll.php?act=listTransit',{method: 'POST',body: mydat}) // 使用 fetch 發送 GET 請求獲取購物清單
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(myJson) {
+				that.dat = myJson;
+			});
 		},
 		readyToPay: function() { // 將購物車訂單寄送出去
 			var yes = confirm('Are You Sure?'); // 詢問是否確定送出訂單
 			if (yes) {
 				alert('Your order has been dispatched.');
-				// 先把訂單寄出，再刪除目前購物車內容
+				// 把購物車訂單送去transit(運送中訂單)，再刪除目前購物車內容
 			} else {
 				alert('Cancelled');
 			}
@@ -267,8 +306,7 @@ const todoApp= Vue.createApp({
 			  var clientValue = match[2];
 			  this.newPro.username=clientValue;
 			} else {
-				  alert('fail to add new item :(');
-				window.location.assign("Location: http://localhost/MVC/MVC/clientView.html");
+				alert('fail to add new item :(');
 			}
 			let mydat = new FormData();
 			mydat.append( "dat", JSON.stringify(this.newPro) );
@@ -292,8 +330,7 @@ const todoApp= Vue.createApp({
 			  var clientValue = match[2];
 			  this.newPro.username=clientValue; // 紀錄誰把商品放入自己的購物車中
 			} else {
-			  alert('fail to add new item :(');
-				window.location.assign("Location: http://localhost/MVC/MVC/clientView.html");
+				alert('fail to add new item :(');
 			}
 
 			let mydat = new FormData();
@@ -332,8 +369,7 @@ const todoApp= Vue.createApp({
 			  var clientValue = match[2];
 			  this.newPro.username=clientValue;
 			} else {
-			//   alert('fail to add new item :(');
-			// window.location.assign("Location: http://localhost/MVC/MVC/clientView.html");
+			  alert('fail to add new item :(');
 			}
 			let mydat = new FormData();
 			mydat.append( "dat", JSON.stringify(this.newPro) );
@@ -362,6 +398,10 @@ const todoApp= Vue.createApp({
 		setUI1: function(page) {
 			this.UI=page;
 			this.loadshoppingList();
+		},
+		setUICheck: function(page){
+			this.UI=page;
+			this.checkOrder(); // 載入訂單狀態
 		}
 		
 	},

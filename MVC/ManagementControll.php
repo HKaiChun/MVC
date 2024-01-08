@@ -3,6 +3,10 @@ require('ManagementModel.php');
 $act = $_REQUEST['act'];
 
 switch($act) {
+    case "listTransit":
+        $pro=getTransit();
+        echo json_encode($pro);
+        return;
     case "listPro":
         $pro=getLoadList();
         echo json_encode($pro);
