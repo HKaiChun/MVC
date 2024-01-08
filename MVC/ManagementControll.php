@@ -3,6 +3,12 @@ require('ManagementModel.php');
 $act = $_REQUEST['act'];
 
 switch($act) {
+    case "sendTransit":
+        $proStr=$_POST['dat'];
+        $pro=json_decode($proStr);
+        sendTransit($pro->username); // 將購物車訂單移向訂單狀態表格(結帳動作)
+        echo json_encode($pro);
+        return;
     case "listTransit":
         $pro=getTransit();
         echo json_encode($pro);

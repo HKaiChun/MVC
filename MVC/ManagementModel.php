@@ -1,5 +1,13 @@
 <?php
 require('dbconfig.php');
+function sendTransit($username) {
+	global $db;
+	$sql = "INSERT INTO transit (id, pName, price, num, total, merchant, username, status) SELECT id, pName, price, num, total, merchant, username, 'sent' FROM shop WHERE username = ?;";
+	$stmt = mysqli_prepare($db, $sql);
+	mysqli_stmt_bind_param($stmt, "s", $username);
+	mysqli_stmt_execute($stmt); //執行SQL
+	return true;
+}
 function getTransit() {
 	global $db;
 	$sql = "select * from transit;";
