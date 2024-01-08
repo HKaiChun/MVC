@@ -2,7 +2,7 @@
 require('dbconfig.php');
 function sendTransit($username) {
 	global $db;
-	$sql = "INSERT INTO transit (pName, price, num, total, merchant, username, status) SELECT pName, price, num, total, merchant, username, 'sent' FROM shop WHERE username = ?;";
+	$sql = "INSERT INTO transit (pName, price, num, total, merchant, username, status) SELECT pName, price, num, total, merchant, username, '未處理' FROM shop WHERE username = ?;";
 	$stmt = mysqli_prepare($db, $sql);
 	mysqli_stmt_bind_param($stmt, "s", $username);
 	mysqli_stmt_execute($stmt); //執行SQL
