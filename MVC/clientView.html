@@ -149,7 +149,7 @@ div#list, p #totalPrice {
 	<br>
 	<button @click="getCookies()">getCookiesValue</button><br><!--  測試用 -->
 	<button @click="setUICheck('transitForm')">訂單狀態</button>&emsp; <!--訂單狀態表格-->
-	<button @click="setUISee('doneForm')">已完成的訂單</button>
+	<button @click="setUISee('doneForm')">已完成的訂單</button> <!--只顯示狀態為已送達的訂單-->
 </div>
 
 <div v-if="UI=='editForm'">
