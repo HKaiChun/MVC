@@ -1,144 +1,151 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="https://unpkg.com/vue@3.2.21"></script>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* 修改为 center */
-            align-items: center;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-            color: #5a5158;
-        }
-        /* 標題樣式 */
-        h1 {
-            color: #5a5158; /* 標題顏色 */
-            text-align: center;
-            font-size: 30px;
-        }
-        #main {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        height: 30vh; /* 让内容垂直居中 */
-        }
-        table {
-        background-color: #E5E5E5;
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script type="text/javascript" src="https://unpkg.com/vue@3.2.21"></script>
+     <style>
+         body {
+             display: flex;
+             flex-direction: column;
+             justify-content: flex-start; /* 修改為 center */
+             align-items: center;
+             margin: 0;
+             background-color: #f0f0f0;
+             font-family: Arial, sans-serif;
+             color: #5a5158;
+         }
+         /* 標題樣式 */
+         h1 {
+             color: #5a5158; /* 標題顏色 */
+             text-align: center;
+             font-size: 30px;
+         }
+         #main {
+         display: flex;
+         justify-content: flex-start;
+         align-items: center;
+         height: 30vh; /* 讓內容垂直居中 */
+         }
+         table {
+         background-color: #E5E5E5;
 
-        border-collapse: collapse;
-        border-radius: 10px; /* 圆角边框 */
-        overflow: hidden; /* 隐藏溢出部分 */
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd; /* 边框样式 */
-        }
-        button {
-        background-color: #4CAF50; /* 绿色按钮背景颜色 */
-        color: #5a5158; /* 文字颜色 */
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 5px; /* 圆角按钮 */
-        }
-        button:hover {
-            background-color: #45a049; /* 鼠标悬停时的颜色 */
-        }
-    </style>
+         border-collapse: collapse;
+         border-radius: 10px; /* 圓角邊框 */
+         overflow: hidden; /* 隱藏溢出部分 */
+         }
+         th, td {
+             padding: 10px;
+             border: 1px solid #ddd; /* 邊框樣式 */
+         }
+         button {
+         background-color: #678F8D; /* 綠色按鈕背景顏色 */
+         color: #5a5158; /* 文字顏色 */
+         border: none;
+         padding: 10px 20px;
+         cursor: pointer;
+         border-radius: 5px; /* 圓角按鈕 */
+         }
+         button:hover {
+             background-color: #678F8D; /* 滑鼠懸停時的顏色 */
+         }
+     </style>
 
-    </style>
+     </style>
 </head>
 
 <body>
-    <div id="main">
-        <div id="customer-orders" v-if="UI === 'main'">
-            <h1>物流訂單</h1>
-            <table border=1>
-                <tr>
-                    <td>序號</td>
-                    <td>商品</td>
-                    <td>總額</td>
-                    <td>狀態</td>
-                    <td>客戶序號</td>
-                    <td>商家序號</td>
-                    <td>-</td>
-                </tr>
-                <tr v-for="order in customerOrders">
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.commodity }}</td>
-                    <td>{{ order.total }}</td>
-                    <td>{{ order.status }}</td>
-                    <td>{{ order.userId }}</td>
-                    <td>{{ order.Mid }}</td>
-                    <td>
-                        <button @click="markDelivered(order.id)">
-                            標記為已送達
-                        </button>
-                        <button @click="markShipped(order.id)">
-                            標記為已寄送
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
+     <div id="main">
+         <div id="customer-orders" v-if="UI === 'main'">
+             <h1>物流訂單</h1>
+             <table border=1>
+                 <tr>
+                     <td>序號</td>
+                     <td>商品</td>
+                     <td>價格</td>
+                     <td>數量</td>
+                     <td>總額</td>
+                     <td>寄送者</td>
+                     <td>狀態</td>
+                     <td>收貨者</td>
 
-    <script>
-        const logisticsApp = Vue.createApp({
-            data() {
-                return {
-                    customerOrders: [], // 用於存儲客戶訂單
-                    shopOrders: [], // 用於存儲商家訂單
-                    UI: 'main' // 設置初始 UI 狀態
-                };
-            },
-            methods: {
-                // 列出客戶訂單
-                loadCustomerOrders()
-                {
-                    fetch('logisticsControl.php?act=listOrder')
-                        .then(response => response.json())
-                        .then(data =>
-                        {
-                            this.customerOrders = data;
-                        });
-                },
-                // 標記訂單為已送達
-                markDelivered(orderid)
-                {
-                    fetch(`logisticsControl.php?act=markDelivered&id=${orderid}`)
-                        .then(response => response.text())
-                        .then(data =>
-                        {
-                            console.log(data);
-                            // 在此處刷新客戶訂單列表
-                            this.loadCustomerOrders();
-                        });
-                },
-                // 標記訂單為已寄送
-                markShipped(orderid)
-                {
-                    fetch(`logisticsControl.php?act=markShipped&id=${orderid}`)
-                        .then(response => response.text())
-                        .then(data =>
-                        {
-                            console.log(data);
-                            // 在此處刷新商家訂單列表
-                            this.loadCustomerOrders();
-                        });
-                },
-            },
-            mounted()
-            {
-                // 在應用程式創建時列出客戶訂單
-                this.loadCustomerOrders();
-            }
-        }).mount("#main");
-    </script>
+
+
+                     <td>-</td>
+                 </tr>
+                 <tr v-for="order in customerOrders">
+                     <td>{{ order.id }}</td>
+                     <td>{{ order.pName }}</td>
+                     <td>{{ order.price }}</td>
+                     <td>{{ order.num }}</td>
+                     <td>{{ order.total }}</td>
+                     <td>{{ order.merchant }}</td>
+                     <td>{{ order.status }}</td>
+                     <td>{{ order.username }}</td>
+                     <td>
+                         <button @click="markDelivered(order.id)">
+                             標記為已送達
+                         </button>
+                         <button @click="markShipped(order.id)">
+                             標記為已寄送
+                         </button>
+                     </td>
+                 </tr>
+             </table>
+         </div>
+     </div>
+
+     <script>
+         const logisticsApp = Vue.createApp({
+             data() {
+                 return {
+                     customerOrders: [], // 用於儲存客戶訂單
+                     shopOrders: [], // 用於儲存商家訂單
+                     UI: 'main' // 設定初始 UI 狀態
+                 };
+             },
+             methods: {
+                 // 列出客戶訂單
+                 loadCustomerOrders()
+                 {
+                     fetch('logisticsControl.php?act=listOrder')
+                         .then(response => response.json())
+                         .then(data =>
+                         {
+                             this.customerOrders = data;
+                         });
+                 },
+                 // 標記訂單為已送達
+                 markDelivered(orderid)
+                 {
+                     fetch(`logisticsControl.php?act=markDelivered&id=${orderid}`)
+                         .then(response => response.text())
+                         .then(data =>
+                         {
+                             console.log(data);
+                             // 在此處刷新客戶訂單列表
+                             this.loadCustomerOrders();
+                         });
+                 },
+                 // 標記訂單為已寄送
+                 markShipped(orderid)
+                 {
+                     fetch(`logisticsControl.php?act=markShipped&id=${orderid}`)
+                         .then(response => response.text())
+                         .then(data =>
+                         {
+                             console.log(data);
+                             // 在此處刷新商家訂單列表
+                             this.loadCustomerOrders();
+                         });
+                 },
+             },
+             mounted()
+             {
+                 // 在應用程式建立時列出客戶訂單
+                 this.loadCustomerOrders();
+             }
+         }).mount("#main");
+     </script>
 </body>
 </html>
