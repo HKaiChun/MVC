@@ -4,6 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://unpkg.com/vue@3.2.21"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 修改为 center */
+            align-items: center;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            color: #5a5158;
+        }
+        /* 標題樣式 */
+        h1 {
+            color: #5a5158; /* 標題顏色 */
+            text-align: center;
+            font-size: 30px;
+        }
+        #main {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 30vh; /* 让内容垂直居中 */
+        }
+        table {
+        background-color: #E5E5E5;
+
+        border-collapse: collapse;
+        border-radius: 10px; /* 圆角边框 */
+        overflow: hidden; /* 隐藏溢出部分 */
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd; /* 边框样式 */
+        }
+        button {
+        background-color: #4CAF50; /* 绿色按钮背景颜色 */
+        color: #5a5158; /* 文字颜色 */
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px; /* 圆角按钮 */
+        }
+        button:hover {
+            background-color: #45a049; /* 鼠标悬停时的颜色 */
+        }
+    </style>
+
+    </style>
 </head>
 
 <body>
