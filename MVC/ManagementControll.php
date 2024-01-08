@@ -6,11 +6,13 @@ switch($act) {
     case "sendTransit":
         $proStr=$_POST['dat'];
         $pro=json_decode($proStr);
-        sendTransit($pro->username); // 將購物車訂單移向訂單狀態表格(結帳動作)
+        sendTransit($pro->username); // 將購物車訂單移向訂單狀態表格(結帳動作)，刪除原本購物車資料
         echo json_encode($pro);
         return;
     case "listTransit":
-        $pro=getTransit();
+        $proStr=$_POST['dat'];
+        $pro1=json_decode($proStr);
+        $pro=getTransit($pro1->username);
         echo json_encode($pro);
         return;
     case "listPro":

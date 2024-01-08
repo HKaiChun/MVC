@@ -239,7 +239,6 @@ const todoApp= Vue.createApp({
     },
 	methods: {
 		checkOrder: function(){ // 查看訂單狀態
-			// 還沒寫完
 			const that=this;
 			var name = new RegExp('(^|; )client=([^;]*)');
 			var match = document.cookie.match(name);
@@ -283,7 +282,7 @@ const todoApp= Vue.createApp({
 			.then(function(res){return res.text(); }) //取得傳回值，轉為文字
 			.then(function(data){ 
 				console.log(data);
-				that.setUICheck('transitFrom');
+				that.setUI('main');
 			})
 		},
 		readyToPay: function() { // 將購物車訂單寄送出去
