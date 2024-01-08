@@ -40,11 +40,13 @@
          }
          button {
          background-color: #678F8D; /* 綠色按鈕背景顏色 */
-         color: #5a5158; /* 文字顏色 */
+         color: #ddd; /* 文字顏色 */
          border: none;
          padding: 10px 20px;
          cursor: pointer;
          border-radius: 5px; /* 圓角按鈕 */
+         font-size: 15px;
+
          }
          button:hover {
              background-color: #678F8D; /* 滑鼠懸停時的顏色 */
@@ -68,9 +70,6 @@
                      <td>寄送者</td>
                      <td>狀態</td>
                      <td>收貨者</td>
-
-
-
                      <td>-</td>
                  </tr>
                  <tr v-for="order in customerOrders">
