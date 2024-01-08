@@ -152,6 +152,7 @@ div#list, p #totalPrice {
 	<button @click="setUISee('doneForm')">已完成的訂單</button> <!--只顯示狀態為已送達的訂單-->
 </div>
 
+
 <div v-if="UI=='editForm'">
 	<h1>我的購物車</h1>
 	<button @click="setUI('main')">返回商品清單</button>
@@ -174,7 +175,6 @@ div#list, p #totalPrice {
 <p>總價:<span id="totalPrice"></span></p>
 <button @click="readyToPay()">PAY</button>
 </div>
-
 <div v-if="UI=='editForm2'">
 	商品名稱: {{newPro.pName}} <br/>
 
@@ -329,8 +329,7 @@ const todoApp= Vue.createApp({
 			var yes = confirm('Are You Sure?'); // 詢問是否確定送出訂單
 			if (yes) {
 				alert('Your order has been dispatched.');
-				// 把購物車訂單送去transit(運送中訂單)，再刪除目前購物車內容
-				this.sendTransit();
+				// 先把訂單寄出，再刪除目前購物車內容
 			} else {
 				alert('Cancelled');
 			}
@@ -370,7 +369,8 @@ const todoApp= Vue.createApp({
 			  var clientValue = match[2];
 			  this.newPro.username=clientValue;
 			} else {
-				alert('fail to add new item :(');
+				  alert('fail to add new item :(');
+				window.location.assign("Location: http://localhost/MVC/MVC/clientView.html");
 			}
 			let mydat = new FormData();
 			mydat.append( "dat", JSON.stringify(this.newPro) );
@@ -394,7 +394,8 @@ const todoApp= Vue.createApp({
 			  var clientValue = match[2];
 			  this.newPro.username=clientValue; // 紀錄誰把商品放入自己的購物車中
 			} else {
-				alert('fail to add new item :(');
+			  alert('fail to add new item :(');
+				window.location.assign("Location: http://localhost/MVC/MVC/clientView.html");
 			}
 
 			let mydat = new FormData();
@@ -433,7 +434,8 @@ const todoApp= Vue.createApp({
 			  var clientValue = match[2];
 			  this.newPro.username=clientValue;
 			} else {
-			  alert('fail to add new item :(');
+			//   alert('fail to add new item :(');
+			// window.location.assign("Location: http://localhost/MVC/MVC/clientView.html");
 			}
 			let mydat = new FormData();
 			mydat.append( "dat", JSON.stringify(this.newPro) );
