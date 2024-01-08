@@ -98,6 +98,7 @@ input[type="number"] {
                     <td><button @click="setEditUI(pro)">編輯</button></td>
                 </tr>
             </table>
+            <button @click="setUICheck('transitForm')">訂單狀態</button>&emsp; <!--訂單狀態表格-->
         </div>
         <div v-if="UI=='editForm'">
             商品名稱: <input type="text" v-model="newPro.pName" /> <br />
@@ -105,7 +106,32 @@ input[type="number"] {
             價格: <input type="number" v-model="newPro.price" id="tentacles"/><br>
             <input type='button' @click="addPro()" value="save">
         </div>
+
+    <div v-if="UI=='transitForm'"> <!--訂單狀態表格-->
+        <table border="1">
+        <tr>
+            <td>序號</td>
+            <td>商品名稱</td>
+            <td>價格</td>
+            <td>數量</td>
+            <td>總價</td>
+            <td>訂單狀態</td>
+            <td>使用者</td>
+        </tr>
+        <tr v-for="pro in dat">
+            <td>{{pro.id}}</td>
+            <td>{{pro.pName}}</td>
+            <td>{{pro.price}}</td>
+            <td>{{pro.num}}</td>
+            <td>{{pro.total}}</td>
+            <td>{{pro.status}}</td>
+            <td>{{pro.username}}</td>
+        </tr>
+        </table>
+        <button @click="setUI('main')">返回商品清單</button>
     </div>
+    </div>
+    
     <script>
         const MaPro = Vue.createApp({
             data() {
@@ -115,12 +141,27 @@ input[type="number"] {
                     newPro: {//新增編輯前的預設值
                         id: -1,
                         pName: '',
+                        price: '',
                         description: '',
-                        price: ''
+                        num: 0,
+                        total: 0,
+                        username: ''
                     }
                 }
             },
             methods: {
+                checkOrder: function(){ // 查看訂單狀態
+                        fetch('ManagementControll.php?act=listTransitorder')
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                                
+                                this.databaseData = data;
+                            })
+                            .catch(error => {
+                                console.error('Error fetching data:', error);
+                            });
+                },
                 loadList: function () {
                     const that = this; //this  ==> stands for vm6. let's save `this` to `that`
                     fetch('ManagementControll.php?act=listPro')
@@ -178,8 +219,14 @@ input[type="number"] {
                 },
                 setUI: function (page) {
                     this.UI = page;
-                }
+                },
+                setUICheck: function(page){
+                    this.UI=page;
+                    this.checkOrder(); // 載入訂單狀態
+                },
+
             },
+            
             created() {
                 this.loadList();
             }

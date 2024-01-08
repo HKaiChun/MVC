@@ -19,6 +19,13 @@ switch($act) {
         $pro=getLoadList();
         echo json_encode($pro);
         return;
+    case "listTransitorder":
+        $proStr=$_POST['dat'];
+        $pro=getTransitorder();
+        echo json_encode($pro);
+        return;
+
+
     case "addPro":
         $proStr=$_POST['dat'];// 從 POST 請求中獲取數據
         $pro=json_decode($proStr);
