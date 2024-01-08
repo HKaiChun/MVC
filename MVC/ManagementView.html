@@ -7,72 +7,80 @@
     <script type="text/javascript" src="https://unpkg.com/vue@3.0.2"></script> <!-- 為了使用 Vue -->
     <title>商家商品管理</title>
     <style>
-    /* 將整個頁面內容置中 */
-    body {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-}
-    
-    /* 標題樣式 */
-    h1 {
-         color: #5a5158; /* 標題顏色 */
-         text-align: center;
-    }
-    
-    /* 按鈕樣式 */
-    button {
-         background-color: #678F8D; /* 背景顏色 */
-         color: #fff; /* 文字顏色 */
-         border: none;
-         border-radius: 5px;
-         padding: 10px 20px;
-         cursor: pointer;
-         font-size: 16px;
-    }
-    
-    /* 表格樣式 */
-    table {
-     background-color: #E5E5E5;
-     color : #5a5158;
-     width: 800px;
-     border-collapse: collapse;
-     margin-top: 20px;
-     border: 2px solid #ddd; /* 新增表格邊框 */
-     border-radius: 5px; /* 新增圓角框 */
-}
+        /* 將整個頁面內容置中 */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
 
-table, th, td {
-     border: 1px solid #ddd;
-}
+        /* 標題樣式 */
+        h1 {
+            color: #5a5158;
+            /* 標題顏色 */
+            text-align: center;
+        }
 
-th, td {
-     padding: 10px;
-     text-align: center;
-}
+        /* 按鈕樣式 */
+        button {
+            background-color: #678F8D;
+            /* 背景顏色 */
+            color: #fff;
+            /* 文字顏色 */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-/* 表單樣式 */
-form {
-     text-align: center;
-}
+        /* 表格樣式 */
+        table {
+            background-color: #E5E5E5;
+            color: #5a5158;
+            width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 2px solid #ddd;
+            /* 新增表格邊框 */
+            border-radius: 5px;
+            /* 新增圓角框 */
+        }
 
-/* 輸入框樣式 */
-input[type="text"],
-input[type="password"],
-textarea,
-input[type="number"] {
-     width: 100%;
-     padding: 5px;
-     margin: 10px 0;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-}
-</style>
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* 表單樣式 */
+        form {
+            text-align: center;
+        }
+
+        /* 輸入框樣式 */
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -103,35 +111,35 @@ input[type="number"] {
         <div v-if="UI=='editForm'">
             商品名稱: <input type="text" v-model="newPro.pName" /> <br />
             描述: <textarea v-model="newPro.description"></textarea><br>
-            價格: <input type="number" v-model="newPro.price" id="tentacles"/><br>
+            價格: <input type="number" v-model="newPro.price" id="tentacles" /><br>
             <input type='button' @click="addPro()" value="save">
         </div>
 
-    <div v-if="UI=='transitForm'"> <!--訂單狀態表格-->
-        <table border="1">
-        <tr>
-            <td>序號</td>
-            <td>商品名稱</td>
-            <td>價格</td>
-            <td>數量</td>
-            <td>總價</td>
-            <td>訂單狀態</td>
-            <td>使用者</td>
-        </tr>
-        <tr v-for="pro in dat">
-            <td>{{pro.id}}</td>
-            <td>{{pro.pName}}</td>
-            <td>{{pro.price}}</td>
-            <td>{{pro.num}}</td>
-            <td>{{pro.total}}</td>
-            <td>{{pro.status}}</td>
-            <td>{{pro.username}}</td>
-        </tr>
-        </table>
-        <button @click="setUI('main')">返回商品清單</button>
+        <div v-if="UI=='transitForm'"> <!--訂單狀態表格-->
+            <table border="1">
+                <tr>
+                    <td>序號</td>
+                    <td>商品名稱</td>
+                    <td>價格</td>
+                    <td>數量</td>
+                    <td>總價</td>
+                    <td>訂單狀態</td>
+                    <td>使用者</td>
+                </tr>
+                <tr v-for="pro in dat">
+                    <td>{{pro.id}}</td>
+                    <td>{{pro.pName}}</td>
+                    <td>{{pro.price}}</td>
+                    <td>{{pro.num}}</td>
+                    <td>{{pro.total}}</td>
+                    <td>{{pro.status}}</td>
+                    <td>{{pro.username}}</td>
+                </tr>
+            </table>
+            <button @click="setUI('main')">返回商品清單</button>
+        </div>
     </div>
-    </div>
-    
+
     <script>
         const MaPro = Vue.createApp({
             data() {
@@ -150,17 +158,17 @@ input[type="number"] {
                 }
             },
             methods: {
-                checkOrder: function(){ // 查看訂單狀態
-                        fetch('ManagementControll.php?act=listTransitorder')
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data);
-                                
-                                this.databaseData = data;
-                            })
-                            .catch(error => {
-                                console.error('Error fetching data:', error);
-                            });
+                checkOrder: function () { // 查看訂單狀態
+                    const that = this;
+                    let mydat = new FormData();
+                    mydat.append("dat", JSON.stringify(this.newPro));
+                    fetch('ManagementControll.php?act=listTransitorder', { method: 'POST', body: mydat }) // 使用 fetch 發送 GET 請求獲取購物清單
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (myJson) {
+                            that.dat = myJson;
+                        });
                 },
                 loadList: function () {
                     const that = this; //this  ==> stands for vm6. let's save `this` to `that`
@@ -220,13 +228,13 @@ input[type="number"] {
                 setUI: function (page) {
                     this.UI = page;
                 },
-                setUICheck: function(page){
-                    this.UI=page;
+                setUICheck: function (page) {
+                    this.UI = page;
                     this.checkOrder(); // 載入訂單狀態
                 },
 
             },
-            
+
             created() {
                 this.loadList();
             }
