@@ -3,6 +3,12 @@ require('ManagementModel.php');
 $act = $_REQUEST['act'];
 
 switch($act) {
+    case "listDone":
+        $proStr=$_POST['dat'];
+        $pro1=json_decode($proStr);
+        $pro=getDone($pro1->username);
+        echo json_encode($pro);
+        return;
     case "sendTransit":
         $proStr=$_POST['dat'];
         $pro=json_decode($proStr);

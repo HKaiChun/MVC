@@ -148,7 +148,8 @@ div#list, p #totalPrice {
 	</table>
 	<br>
 	<button @click="getCookies()">getCookiesValue</button><br><!--  測試用 -->
-	<button @click="checkOrder()">訂單狀態</button>&emsp;<button>已完成的訂單</button>
+	<button @click="setUICheck('transitForm')">訂單狀態</button>&emsp; <!--訂單狀態表格-->
+	<button @click="setUISee('doneForm')">已完成的訂單</button>
 </div>
 
 
@@ -185,6 +186,44 @@ div#list, p #totalPrice {
 
 	<input type='button' @click="addJob(pro)" value="save">
 </div>
+
+<div v-if="UI=='transitForm'"> <!--訂單狀態表格-->
+	<table border="1">
+	<tr>
+		<td>序號</td><td>商品名稱</td><td>價格</td><td>數量</td><td>總價</td><td>商家名稱</td><td>訂單狀態</td><td>使用者</td>
+	</tr>
+	<tr v-for="pro in dat">
+		<td>{{pro.id}}</td>
+		<td>{{pro.pName}}</td>
+		<td>{{pro.price}}</td>
+		<td>{{pro.num}}</td>
+		<td>{{pro.total}}</td>
+		<td>{{pro.merchant}}</td>
+		<td>{{pro.status}}</td>
+		<td>{{pro.username}}</td>
+	</tr>
+	</table>
+	<button @click="setUI('main')">返回商品清單</button>
+</div>
+
+<div v-if="UI=='doneForm'">
+	<table border="1">
+	<tr>
+		<td>序號</td><td>商品名稱</td><td>價格</td><td>數量</td><td>總價</td><td>商家名稱</td><td>訂單狀態</td><td>使用者</td>
+	</tr>
+	<tr v-for="pro in dat">
+		<td>{{pro.id}}</td>
+		<td>{{pro.pName}}</td>
+		<td>{{pro.price}}</td>
+		<td>{{pro.num}}</td>
+		<td>{{pro.total}}</td>
+		<td>{{pro.merchant}}</td>
+		<td>{{pro.status}}</td>
+		<td>{{pro.username}}</td>
+	</tr>
+	</table>
+	<button @click="setUI('main')">返回商品清單</button>
+</div>
 </div>
 
 <script>
@@ -218,6 +257,27 @@ const todoApp= Vue.createApp({
         },
     },
 	methods: {
+		checkDone: function(){ // 查看評論頁面
+			const that=this;
+			var name = new RegExp('(^|; )client=([^;]*)');
+			var match = document.cookie.match(name);
+			if (match) {
+			  var clientValue = match[2];
+			  this.newPro.username=clientValue;
+			} else {
+				alert('fail to add new item :(');
+			}
+
+			let mydat = new FormData();
+			mydat.append( "dat", JSON.stringify(this.newPro) );
+			fetch('ManagementControll.php?act=listDone',{method: 'POST',body: mydat}) // 使用 fetch 發送 GET 請求獲取購物清單
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(myJson) {
+				that.dat = myJson;
+			});
+		},
 		checkOrder: function(){ // 查看訂單狀態
 			const that=this;
 			var name = new RegExp('(^|; )client=([^;]*)');
@@ -404,6 +464,14 @@ const todoApp= Vue.createApp({
 		setUI1: function(page) {
 			this.UI=page;
 			this.loadshoppingList();
+		},
+		setUICheck: function(page){
+			this.UI=page;
+			this.checkOrder(); // 載入訂單狀態
+		},
+		setUISee: function(page){
+			this.UI=page;
+			this.checkDone();
 		}
 		
 	},
