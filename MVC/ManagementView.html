@@ -125,6 +125,7 @@
                     <td>總價</td>
                     <td>訂單狀態</td>
                     <td>使用者</td>
+                    <td>-</td>
                 </tr>
                 <tr v-for="pro in dat">
                     <td>{{pro.id}}</td>
@@ -134,6 +135,7 @@
                     <td>{{pro.total}}</td>
                     <td>{{pro.status}}</td>
                     <td>{{pro.username}}</td>
+                    <td><button @click="inTransit(pro.id)">標記寄送中</button></td>
                 </tr>
             </table>
             <button @click="setUI('main')">返回商品清單</button>
@@ -158,6 +160,20 @@
                 }
             },
             methods: {
+                inTransit: function (id) {
+                    const that=this;
+                    url="ManagementControll.php?act=inTransit&id=" + id;
+                    fetch(url, {
+                        method:'POST'
+                    })
+                         .then(function(res) {return res.text();})
+                         .then(function(data)
+                         {
+                             console.log(data);
+                             // 在此處刷新客戶訂單列表
+                             that.checkOrder();
+                         });
+                },
                 checkOrder: function () { // 查看訂單狀態
                     const that = this;
                     let mydat = new FormData();

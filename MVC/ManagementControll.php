@@ -3,6 +3,10 @@
 require('ManagementModel.php');
 $act = $_REQUEST['act'];
 switch($act) {
+    case "inTransit":
+        $id=(int)$_REQUEST['id'];
+        inTransit($id);
+        return;
     case "listDone":
         $proStr=$_POST['dat'];
         $pro1=json_decode($proStr);
